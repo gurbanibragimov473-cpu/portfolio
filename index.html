@@ -1,25 +1,267 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#07090d"><title>Портфолио</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="css/style.css?v=2"><link rel="stylesheet" href="css/anim.css?v=2">
-  <link rel="preload" href="video/homebg.mp4" as="video" type="video/mp4"><link rel="prefetch" href="video/zebrabg.mp4"><link rel="prefetch" href="video/akkubg.mp4"><link rel="prefetch" href="video/aboutbg.mp4">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#284e3a">
+  <title>Секунды на весь день</title>
+  <style>
+    :root { color-scheme: light; --ink:#244638; --cream:#fff9e9; --gold:#ffd65d; --green:#478459; }
+    * { box-sizing:border-box; }
+    html, body { margin:0; width:100%; height:100%; overflow:hidden; font-family: ui-rounded, "Trebuchet MS", system-ui, sans-serif; background:#d5e9dc; color:var(--ink); }
+    body { display:block; }
+    button { font:inherit; }
+    .game { position:relative; width:100vw; height:100dvh; min-height:0; overflow:hidden; background:linear-gradient(#b9e2ea 0%,#d9efdc 47%,#92bd70 47%,#73a95f 100%); isolation:isolate; }
+    .sky { position:absolute; inset:0 0 30%; overflow:hidden; }
+    .sun { position:absolute; top:9%; right:12%; width:clamp(48px,9vw,92px); aspect-ratio:1; border-radius:50%; background:#ffe89a; box-shadow:0 0 50px #ffe89a88; }
+    .cloud { position:absolute; width:130px; height:32px; border-radius:50%; background:#f6fff0d9; filter:drop-shadow(0 4px 2px #ffffff30); }
+    .cloud:before,.cloud:after { content:""; position:absolute; bottom:2px; background:inherit; border-radius:50%; }
+    .cloud:before { width:58px;height:48px;left:24px; } .cloud:after{width:66px;height:39px;left:60px;}
+    .c1{left:9%;top:19%;}.c2{left:55%;top:12%;transform:scale(.8);}
+    .hill { position:absolute; left:-15%; width:130%; height:45%; bottom:20%; border-radius:50% 50% 0 0; background:#719b64; }
+    .hill.back { bottom:25%;left:20%;background:#59865b;transform:rotate(-4deg); }
+    .hill.front { bottom:-14%;left:-5%;height:50%;background:#82b96d; }
+    .grass { position:absolute; bottom:0; height:35%; width:100%; background:linear-gradient(#80b969,#6ba35b); }
+    .path { position:absolute; bottom:-8%; left:41%; width:26%; height:42%; background:#ceb78e; clip-path:polygon(31% 0,69% 0,100% 100%,0 100%); opacity:.9; }
+    .tree { position:absolute; bottom:31%; width:0;height:0;border-left:clamp(28px,5vw,52px) solid transparent;border-right:clamp(28px,5vw,52px) solid transparent;border-bottom:clamp(95px,17vh,155px) solid #356b50; filter:drop-shadow(0 10px 0 #4b8057); }
+    .tree:after { content:""; position:absolute; width:12px;height:32px;background:#76593e;left:-6px;top:calc(clamp(95px,17vh,155px) - 8px); }
+    .t1{left:2%;transform:scale(.8)} .t2{left:18%;transform:scale(1.04)} .t3{right:20%;transform:scale(.8)} .t4{right:3%;transform:scale(1.05)}
+    .house { position:absolute; right:12%; bottom:31%; width:clamp(74px,12vw,132px); height:clamp(55px,9vh,84px); background:#f2d49d; border:3px solid #fff0cf; border-radius:4px 4px 0 0; }
+    .house:before { content:""; position:absolute; left:-12%;top:-52%;width:124%;height:62%;background:#9b5941;clip-path:polygon(50% 0,100% 100%,0 100%); }
+    .house:after { content:""; position:absolute; bottom:0;left:43%;width:18%;height:46%;background:#79583f; }
+    .window { position:absolute; top:24%; width:18%;height:25%;background:#a4d9dc;border:2px solid #fff1d1;z-index:1; }.w1{left:12%}.w2{right:12%}
+    .cow { position:absolute; right:24%; bottom:16%; width:clamp(64px,10vw,104px);height:clamp(34px,5vh,50px); border:2px solid #594d43;border-radius:48% 48% 40% 40%;background:#f2ecdc;z-index:1; }
+    .cow:before { content:"";position:absolute;right:-19%;top:-10%;width:31%;height:70%;border-radius:50%;background:#ead8bf;border:2px solid #594d43; }
+    .cow:after { content:"";position:absolute;inset:20% 32% 30% 18%;background:#4c413a;border-radius:50%;box-shadow:22px 5px 0 -3px #4c413a; }
+    .legs {position:absolute;bottom:-30%;left:20%;width:5px;height:33%;background:#54483c;box-shadow:22px 0 #54483c,46px 0 #54483c;}
+    .flower { position:absolute;bottom:12%;width:10px;height:10px;border-radius:50%;background:#fff2ce;box-shadow:0 -8px 0 -2px #fff2ce,8px 0 0 -2px #fff2ce,-8px 0 0 -2px #fff2ce,0 8px 0 -2px #fff2ce; }
+    .f1{left:15%}.f2{left:32%;bottom:8%}.f3{right:38%;bottom:10%}
+    .hud { position:absolute; z-index:12; top:max(10px,env(safe-area-inset-top));left:12px;right:12px;min-height:62px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fff9e9ed;border:1px solid #ffffff;border-radius:18px;box-shadow:0 5px 18px #365b3e20; }
+    .brand { font-size:clamp(15px,2.3vw,23px);font-weight:900;letter-spacing:.02em;line-height:1.05; }
+    .sub { font-size:11px;font-weight:700;color:#668174;margin-top:4px; }
+    .stats { display:flex;gap:7px;align-items:center; }
+    .pill { padding:9px 12px;border-radius:12px;background:#edf4e8;font-size:clamp(12px,1.8vw,16px);font-weight:900;white-space:nowrap; }
+    .pill.time{background:#fff0c9;color:#73572a;}
+    .boy { position:absolute;z-index:6;left:50%;top:clamp(86px,13vh,128px);width:clamp(66px,17vw,94px);height:clamp(66px,17vw,94px);padding:4px;border:3px solid #fff9e9;border-radius:50%;background:#fff8e9;box-shadow:0 0 0 4px #4f8b5c,0 8px 20px #284b3850;transform:translateX(-50%); }
+    .boy img {width:100%;height:100%;object-fit:cover;object-position:35% 24%;border-radius:50%;}
+    .boy-tag { position:absolute;left:50%;top:calc(clamp(86px,13vh,128px) + clamp(66px,17vw,94px) + 6px);z-index:6;background:#fff9e9e8;border-radius:99px;padding:5px 10px;font-size:10px;font-weight:900;transform:translateX(-50%);white-space:nowrap; }
+    .thrower-lanes {position:absolute;z-index:6;top:clamp(83px,11vh,108px);left:0;right:0;pointer-events:none;}
+    .actor-lane {position:relative;height:clamp(52px,7.2vh,62px);}
+    .actor-avatar {position:absolute;left:50%;top:0;width:clamp(42px,11vw,51px);height:clamp(42px,11vw,51px);padding:2px;border:2px solid #fff8e8;border-radius:50%;background:#fff8e8;overflow:hidden;transform:translateX(-50%);box-shadow:0 0 0 2px #4e8559,0 4px 10px #284b3845;}
+    .actor-avatar img {width:100%;height:100%;object-fit:cover;object-position:35% 24%;border-radius:50%;}
+    .actor-name {position:absolute;left:50%;top:calc(clamp(42px,11vw,51px) - 1px);transform:translateX(-50%);padding:2px 7px;border-radius:20px;background:#fff9e9f2;color:#315342;font-size:clamp(9px,2.3vw,11px);font-weight:900;line-height:1.2;white-space:nowrap;box-shadow:0 2px 5px #284b3820;}
+    .hero-label {position:absolute;z-index:8;left:50%;bottom:clamp(68px,10vh,92px);transform:translateX(-50%);background:#fff9e9ed;border-radius:99px;padding:4px 12px;font-size:12px;font-weight:900;color:#315342;}
+    .thrower { position:absolute; z-index:5; left:50%;top:calc(clamp(86px,13vh,128px) + clamp(66px,17vw,94px) + 26px);font-size:22px;transform:translateX(-50%);filter:drop-shadow(0 4px 2px #344d3340);transition:left .24s ease-out; }
+    .girl { position:absolute; z-index:6; bottom:clamp(74px,11vh,105px); left:50%; height:clamp(220px,38vh,345px); width:auto; max-width:49%; object-fit:contain; object-position:bottom; transform:translateX(-50%); transition:filter .14s; filter:drop-shadow(0 8px 4px #355e3a42); user-select:none; -webkit-user-drag:none; }
+    .girl.catch { filter:drop-shadow(0 0 14px #ffe276); }
+    .girl.hit { animation:hit .35s ease-in-out 2; }
+    @keyframes hit {50%{filter:brightness(1.8) drop-shadow(0 0 15px #59dff3);transform:translateX(-50%) rotate(7deg)}}
+    .item {position:absolute;z-index:7;display:grid;place-items:center;pointer-events:none;will-change:transform;}
+    .second {width:42px;height:42px;border:3px solid #fff5cf;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3a4,#ffc83f);color:#765314;font-size:12px;font-weight:1000;box-shadow:0 0 18px #ffd64d;}
+    .water {width:38px;height:52px;border:3px solid #e7fbff;border-radius:12px 12px 15px 15px;background:linear-gradient(135deg,#d9fbff,#69cce1 65%,#319db7);box-shadow:0 0 12px #91e2f3;transform:rotate(17deg);}
+    .item.water:before {content:"";position:absolute;top:7px;width:19px;height:4px;border-radius:4px;background:#f4ffff;}
+    .bottle {display:grid;place-items:center;width:24px;height:42px;border:2px solid #efffff;border-radius:7px 7px 9px 9px;box-shadow:0 2px 9px #233b4b60;transform:rotate(18deg);color:#fff;font-size:9px;font-weight:900;text-shadow:0 1px 2px #334;}
+    .bottle:before {content:"";position:absolute;left:6px;top:-9px;width:9px;height:9px;border:2px solid #efffff;border-bottom:0;border-radius:3px 3px 0 0;background:inherit;}
+    .bottle:after {content:"";position:absolute;left:3px;right:3px;top:8px;height:3px;background:#ffffffa8;border-radius:3px;}
+    .bottle.water {background:linear-gradient(135deg,#c7f7ff,#48b7d1 72%,#25829d);}
+    .bottle.mud {background:linear-gradient(135deg,#b9875e,#795033 72%,#4d3024);border-color:#ead6b9;}
+    .splat {position:absolute;z-index:5;width:58px;height:17px;border-radius:55% 48% 42% 60%;transform:translateX(-50%);opacity:.95;pointer-events:none;}
+    .splat.water {background:#48b9d3;box-shadow:0 0 0 3px #d9f7ff55;}
+    .splat.mud {background:#795139;box-shadow:0 0 0 3px #d4b49766;}
+    .splat:before,.splat:after {content:"";position:absolute;bottom:4px;width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:15px solid #eaf0e8;filter:drop-shadow(0 1px 1px #33443c);}
+    .splat:before {left:9px;transform:rotate(-24deg)} .splat:after{right:7px;transform:rotate(28deg)}
+    .splat i {position:absolute;left:27px;bottom:5px;width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:12px solid #f2f1e8;transform:rotate(10deg);filter:drop-shadow(0 1px 1px #33443c);}
+    .toast {position:absolute;z-index:13;left:50%;top:19%;transform:translate(-50%,-8px);padding:9px 14px;border-radius:99px;background:#fff9e9;color:#28513d;font-size:14px;font-weight:900;opacity:0;transition:.2s;pointer-events:none;white-space:nowrap;}
+    .toast.show {opacity:1;transform:translate(-50%,0)}
+    .controls {position:absolute;z-index:11;bottom:max(12px,env(safe-area-inset-bottom));left:0;right:0;display:flex;justify-content:space-between;align-items:end;padding:0 16px;pointer-events:none;}
+    .move {pointer-events:auto;display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+    .move button {width:clamp(60px,16vw,78px);height:clamp(56px,12vw,72px);border:2px solid #fff;background:#fff9e9ed;color:#315c43;border-radius:19px;font-size:28px;font-weight:900;box-shadow:0 5px 14px #284b3830;touch-action:none;user-select:none;-webkit-tap-highlight-color:transparent;}
+    .move button:active,.move button.held {background:#ffe17a;transform:translateY(2px);}
+    .hint {pointer-events:none;padding:10px 12px;background:#fff9e9e8;border-radius:13px;font-size:12px;font-weight:800;color:#476853;max-width:45%;text-align:center;}
+    .overlay {position:absolute;z-index:20;inset:0;display:grid;place-items:center;padding:20px;background:#1d3b31a8;backdrop-filter:blur(4px);}
+    .dialog {width:min(440px,94%);padding:25px 24px 22px;border-radius:25px;background:#fff9e9;text-align:center;box-shadow:0 18px 60px #162f2680;}
+    .dialog h1{margin:0 0 9px;font-size:clamp(25px,6vw,36px);color:#284b39;}
+    .dialog p{margin:8px 0;color:#557060;line-height:1.45;font-size:15px;}
+    .start {margin-top:14px;padding:14px 24px;border:0;border-radius:15px;background:#4d8d5d;color:white;font-size:18px;font-weight:900;box-shadow:0 5px 0 #346a46;}
+    .start:active{transform:translateY(2px);box-shadow:0 3px 0 #346a46;}
+    .small{font-size:12px!important;color:#809286!important;}
+    .hidden{display:none!important;}
+    @media (max-width:600px) {
+      .hud{left:8px;right:8px;min-height:58px;padding:8px 9px;border-radius:15px;}
+      .sub{font-size:9px;}.pill{padding:8px 9px;font-size:12px;}
+      .thrower-lanes{top:clamp(81px,10.5vh,99px);}
+      .actor-lane{height:clamp(51px,7vh,58px);}
+      .actor-avatar{width:45px;height:45px;}
+      .actor-name{top:42px;font-size:10px;}
+      .girl{height:clamp(220px,37vh,300px);max-width:55%;bottom:clamp(78px,12vh,102px);}
+      .hero-label{bottom:clamp(70px,10.5vh,90px);}
+      .controls{padding:0 10px;bottom:max(10px,env(safe-area-inset-bottom));}
+      .hint{font-size:10px;max-width:43%;padding:8px 9px;}
+      .move{gap:7px;}.move button{width:62px;height:58px;border-radius:16px;}
+      .path{left:30%;width:48%;}
+      .house{right:10%;bottom:31%;}
+      .cow{right:22%;}
+    }
+    @media (orientation:landscape) and (max-height:500px) {
+      .hud{min-height:48px;padding:5px 10px;}.sub{display:none;}
+      .girl{height:54vh;bottom:64px;}
+      .controls{bottom:8px;}.move button{height:48px;width:62px;}
+      .thrower-lanes{top:61px;}.actor-lane{height:48px;}.actor-avatar{width:39px;height:39px;}.actor-name{top:36px;}
+    }
+  </style>
 </head>
 <body>
-  <div class="video-wall" aria-hidden="true"><video id="page-video" src="video/homebg.mp4" poster="img/homebg.jpg" webkit-playsinline disablepictureinpicture autoplay muted playsinline loop preload="auto" data-video="video/homebg.mp4"></video><div class="wall-shade"></div></div>
-  <div class="loader" id="loader"><div class="loader-message"><div class="loader-meter" id="loader-meter"><span id="percent">0%</span></div><h1 data-i18n="loaderTitle">Добро пожаловать.</h1><p data-i18n="loaderCopy">Идёт загрузка сайта и его проектов, пожалуйста, подождите.</p></div></div>
-  <div class="welcome" id="welcome" aria-modal="true" role="dialog" aria-label="Выбор языка"><div class="welcome-box"><h2 id="welcome-title">Welcome</h2><p id="language-prompt">Choose a language</p><div class="welcome-languages"><button data-language="ru"><svg class="language-flag" viewBox="0 0 60 36" aria-hidden="true"><rect width="60" height="12" fill="#fff"/><rect y="12" width="60" height="12" fill="#1c57a7"/><rect y="24" width="60" height="12" fill="#d52b1e"/></svg><span class="language-code">RU</span><span class="language-name">Русский</span></button><button data-language="en"><svg class="language-flag" viewBox="0 0 60 36" aria-hidden="true"><rect width="60" height="36" fill="#012169"/><path d="M0 0 60 36M60 0 0 36" stroke="#fff" stroke-width="8"/><path d="M0 0 60 36M60 0 0 36" stroke="#c8102e" stroke-width="3"/><path d="M30 0v36M0 18h60" stroke="#fff" stroke-width="12"/><path d="M30 0v36M0 18h60" stroke="#c8102e" stroke-width="6"/></svg><span class="language-code">EN</span><span class="language-name">English</span></button></div></div></div>
-  <header class="site-header"><nav class="site-nav"><a href="#home" data-nav="home" data-i18n="navHome">Главная</a><a href="about.html" data-nav="about" data-i18n="navAbout">Обо мне</a><a href="projects.html" data-nav="projects" data-i18n="navProjects">Проекты</a><a href="contact.html" data-nav="contact" data-i18n="navContact">Контакты</a></nav><div class="site-languages"><button data-language-choice="ru">RU</button><button data-language-choice="en">EN</button></div></header>
-  <main id="home"><section class="intro"><div class="intro-main"><h1 data-i18n="heroTitle">Добро пожаловать!</h1></div><div class="intro-side"><p data-i18n="heroCopy">Здесь собраны мои проекты. Ниже представлены 2 проекта. Какой из них вы хотите посмотреть?</p></div></section>
-    <section class="projects" id="projects" aria-label="Проекты">
-      <article class="project-card zebra-card"><a class="project-shot" href="zebra.html" aria-label="Открыть Zebra Coffee"><img src="img/zebrashot.png" alt="Скриншот сайта Zebra Coffee"></a><div class="project-copy"><h2>Zebra Coffee</h2><p class="project-kind" data-i18n="zebraSubtitle">Зебра Кофе · Сеть кофеен в странах СНГ</p><p data-i18n="zebraSummary">История бренда и основателя, меню с конструктором напитков, карта кофеен и раздел для соискателей.</p><ul class="card-tags"><li data-i18n="tagWeb">Сайт</li><li data-i18n="tagMenu">Меню и карта</li><li data-i18n="tagCareers">Карьера</li></ul><div class="project-buttons"><a class="button button-light" href="zebra.html" data-i18n="details">Подробнее <span>↗</span></a></div></div></article>
-      <article class="project-card akku-card"><a class="project-shot" href="akku.html" aria-label="Открыть AKKU"><img src="img/akkushot.png" alt="Скриншот панели AKKU"></a><div class="project-copy"><h2>AKKU</h2><p class="project-kind" data-i18n="akkuSubtitle">АККУ · Автоматизация автомойки</p><p data-i18n="akkuSummary">Записи, очередь и контроль этапов мойки, история автомобилей, база клиентов и Telegram-уведомления.</p><ul class="card-tags"><li data-i18n="tagCrm">CRM</li><li data-i18n="tagBot">Telegram-бот</li><li data-i18n="tagQueue">Очередь</li></ul><div class="project-buttons"><a class="button button-light" href="akku.html" data-i18n="details">Подробнее <span>↗</span></a></div></div></article>
-    </section><section class="home-cta"><div><h2 data-i18n="homeCtaTitle">Хотите такой же проект?</h2><p data-i18n="homeCtaCopy">Расскажите о задаче — обсудим идею, сроки и подберём решение.</p></div><a class="button button-light" href="contact.html" data-i18n="aboutCtaButton">Написать мне <span>↗</span></a></section>
-  </main>
-  <section class="panel" data-panel="zebra" aria-hidden="true"><div class="panel-backdrop" data-close-panel></div><article class="panel-content"><button class="panel-close" data-close-panel aria-label="Закрыть">×</button><p class="panel-label" data-i18n="zebraSubtitle">Зебра Кофе · Сеть кофеен в странах СНГ</p><h2>Zebra Coffee</h2><figure class="panel-image"><img src="img/zebrashot.png" alt="Главная страница Zebra Coffee"><figcaption data-i18n="zebraCaption">Скриншот сайта Zebra Coffee</figcaption></figure><section><h3 data-i18n="aboutProject">О проекте</h3><p data-i18n="zebraAbout">Зебра Кофе — современная и динамично развивающаяся сеть кофеен в странах СНГ. Сайт передаёт атмосферу и философию бренда, рассказывает его историю и помогает спланировать визит.</p></section><section><h3 data-i18n="founderTitle">История бренда и основателя</h3><p data-i18n="founderCopy">История создания сети, первые трудности, ценности, миссия и путь основателя — отдельная часть сайта для знакомства с брендом.</p></section><section><h3 data-i18n="menuTitle">Меню и конструктор напитков</h3><p data-i18n="menuCopy">Кофейные напитки, чай, холодные миксы, выпечка и десерты. В конструкторе можно выбрать фирменный бленд или моносорт, сироп и объём порции.</p></section><section><h3 data-i18n="mapTitle">Карта и навигация</h3><p data-i18n="mapCopy">Гость выбирает кофейню на карте и в один клик открывает маршрут в навигационном приложении телефона.</p></section><section><h3 data-i18n="careerTitle">Карьера</h3><p data-i18n="careerCopy">Соискатели могут заполнить анкету, рассказать об опыте, приложить резюме и отправить заявку команде.</p></section><a class="button button-light panel-cta" href="https://gurbanibragimov473-cpu.github.io/zebracoffee/" target="_blank" rel="noreferrer" data-i18n="visit">Перейти на сайт <span>↗</span></a></article></section>
-  <section class="panel" data-panel="akku" aria-hidden="true"><div class="panel-backdrop" data-close-panel></div><article class="panel-content"><button class="panel-close" data-close-panel aria-label="Закрыть">×</button><p class="panel-label" data-i18n="akkuSubtitle">АККУ · Автоматизация автомойки</p><h2>AKKU</h2><figure class="panel-image"><img src="img/akkushot.png" alt="Панель управления AKKU"><figcaption data-i18n="akkuCaption">Панель очереди автомобилей AKKU</figcaption></figure><section><h3 data-i18n="akkuAboutTitle">О проекте</h3><p data-i18n="akkuAbout">АККУ — облачная цифровая экосистема для автоматизации автомоек любого масштаба. Она объединяет мобильные инструменты для владельца, администраторов и сотрудников с клиентским сервисом в Telegram.</p></section><section><h3 data-i18n="managementTitle">Управление для сотрудников</h3><ul><li data-i18n="calendarCopy">Календарь записей, свободные слоты и распределение клиентов по боксам без пересечений.</li><li data-i18n="monitorCopy">Панель в реальном времени показывает загрузку, автомобили на территории и этапы работ.</li><li data-i18n="historyCopy">Карточка машины хранит услуги, автохимию, дополнительные работы и историю посещений.</li><li data-i18n="crmCopy">CRM-база объединяет контакты клиентов, предпочтения и хронологию визитов.</li></ul></section><section><h3 data-i18n="customerTitle">Сервис для клиентов</h3><p data-i18n="customerCopy">Telegram-бот позволяет записаться днём и ночью без звонков. Записи синхронизируются с системой автомойки.</p><div class="status-line"><span data-i18n="statusArrive">Заехал</span><span data-i18n="statusWash">Мойка</span><span data-i18n="statusDry">Сушка</span><span data-i18n="statusReady">Готов</span><span data-i18n="statusPark">На парковке</span></div><p data-i18n="notificationsCopy">Клиент получает уведомления о каждом этапе и знает, когда забрать автомобиль.</p></section><section><h3 data-i18n="benefitsTitle">Преимущества для бизнеса</h3><ul><li data-i18n="transparentCopy">Прозрачный учёт заказов и рабочих процессов.</li><li data-i18n="loyaltyCopy">Удобная запись и уведомления помогают укреплять лояльность клиентов.</li><li data-i18n="capacityCopy">Планирование времени и боксов помогает обслуживать больше автомобилей.</li></ul></section><a class="button button-light panel-cta" href="https://akku-carwash-crm.onrender.com/" target="_blank" rel="noreferrer" data-i18n="visitService">Перейти в сервис <span>↗</span></a></article></section>
-  <section class="panel" data-panel="about" aria-hidden="true"><div class="panel-backdrop" data-close-panel></div><article class="panel-content compact-panel"><button class="panel-close" data-close-panel aria-label="Закрыть">×</button><p class="panel-label" data-i18n="aboutLabel">ОБО МНЕ</p><h2 data-i18n="aboutTitle">Цифровые проекты<br>с вниманием к деталям.</h2><p data-i18n="aboutCopy">Я создаю сайты и сервисы, которые помогают бизнесу решать реальные задачи. В этом портфолио — проекты для кофейни и автоматизации автомойки.</p><video class="panel-video" muted playsinline loop autoplay data-video="video/aboutbg.mp4"></video></article></section>
-  <section class="panel" data-panel="contact" aria-hidden="true"><div class="panel-backdrop" data-close-panel></div><article class="panel-content compact-panel"><button class="panel-close" data-close-panel aria-label="Закрыть">×</button><p class="panel-label" data-i18n="contactLabel">СВЯЗАТЬСЯ СО МНОЙ</p><h2 data-i18n="contactTitle">Обсудим ваш проект<br>и воплотим идею в жизнь</h2><p data-i18n="contactCopy1">Если вам понравились проекты «Зебра Кофе» и «АККУ» и вы хотите создать что-то похожее, уникальное или совершенно новое для своего бизнеса — я с удовольствием помогу.</p><p data-i18n="contactCopy2">Каждый проект индивидуален. Обсудим идею, цели, бюджет и ожидания и подберём решение для вашей задачи.</p><p data-i18n="contactCopy3">Корпоративный сайт, интерактивный сервис, мобильная экосистема или автоматизация бизнес-процессов — расскажите, что вам нужно.</p><a class="email-link" href="mailto:gurbanibragimov473@gmail.com">gurbanibragimov473@gmail.com <span>↗</span></a><p data-i18n="contactCopy4">Напишите в любое удобное время, расскажите о своей идее или текущих задачах — обсудим детали.</p></article></section>
-  <script src="js/script.js?v=2"></script>
-</body></html>
-
+<main class="game" id="game" aria-label="Игра Секунды на весь день">
+  <div class="sky"><div class="sun"></div><div class="cloud c1"></div><div class="cloud c2"></div></div>
+  <div class="hill"></div><div class="hill back"></div><div class="grass"></div><div class="hill front"></div><div class="path"></div>
+  <div class="tree t1"></div><div class="tree t2"></div><div class="tree t3"></div><div class="tree t4"></div>
+  <div class="house"><i class="window w1"></i><i class="window w2"></i></div>
+  <div class="cow"><i class="legs"></i></div><i class="flower f1"></i><i class="flower f2"></i><i class="flower f3"></i>
+  <header class="hud">
+    <div><div class="brand">МИНУТЫ МАССАЖА</div><div class="sub">ИГРА: ЗЛОЙ САШКА</div></div>
+    <div class="stats"><div class="pill" id="level">МИНУТА 1</div><div class="pill time" id="score">0 / 12</div></div>
+  </header>
+  <div class="thrower-lanes" id="throwers" aria-label="Те, кто бросает"></div>
+  <img class="girl" id="girl" src="assets/girl.png" alt="Фото девушки — аватар игрока" draggable="false">
+  <div class="hero-label">КИТА</div>
+  <div class="toast" id="toast"></div>
+  <div class="controls">
+    <div class="move"><button id="left" aria-label="Влево">←</button><button id="right" aria-label="Вправо">→</button></div>
+    <div class="hint">Уклоняйся от воды · лови секунды</div>
+  </div>
+  <section class="overlay" id="overlay">
+    <div class="dialog" id="dialog">
+      <h1>Злой Сашка</h1>
+      <p>Помогите Ките заработать минуты на массаж! Ловите 12 секунд на каждом уровне и уворачивайтесь от бутылок с водой и грязью.</p>
+      <p>Бутылки разбиваются при падении, а лужи и осколки остаются на поляне до конца уровня.</p>
+      <p><b>На телефоне:</b> удерживайте стрелки снизу или ведите пальцем по поляне.</p>
+      <button class="start" id="start">Начать игру</button>
+      <p class="small">Для начала коснись кнопки «Начать игру».</p>
+    </div>
+  </section>
+</main>
+<script>
+(() => {
+  const game=document.getElementById('game'), girl=document.getElementById('girl'), throwersEl=document.getElementById('throwers');
+  const overlay=document.getElementById('overlay'), dialog=document.getElementById('dialog');
+  const levelEl=document.getElementById('level'), scoreEl=document.getElementById('score'), toastEl=document.getElementById('toast');
+  const roster=[
+    {name:'Злой Сашка',src:'assets/boy.png',first:1,phase:0},
+    {name:'Крестено',src:'assets/kresteno.png',first:4,phase:1.9},
+    {name:'Макпал',src:'assets/makpal.png',first:5,phase:3.1},
+    {name:'Настя',src:'assets/nastya.png',first:6,phase:4.4}
+  ];
+  const state={running:false,x:.5,keys:{left:false,right:false},actors:[],items:[],hazards:[],caught:0,level:1,lastThrow:0,last:0,startedAt:0,raf:0,toastTimer:0,drag:false,slowUntil:0};
+  const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+  function showToast(text){toastEl.textContent=text;toastEl.classList.add('show');clearTimeout(state.toastTimer);state.toastTimer=setTimeout(()=>toastEl.classList.remove('show'),1100);}
+  function refreshHud(){levelEl.textContent=`МИНУТА ${state.level}`;scoreEl.textContent=`${state.caught} / 12`;}
+  function activeRoster(){return roster.filter(actor=>state.level>=actor.first);}
+  function setRoster(){
+    throwersEl.replaceChildren();state.actors=[];
+    activeRoster().forEach((info,index)=>{
+      const lane=document.createElement('div');lane.className='actor-lane';
+      const avatar=document.createElement('div');avatar.className='actor-avatar';
+      const img=document.createElement('img');img.src=info.src;img.alt=info.name;img.draggable=false;avatar.append(img);
+      const name=document.createElement('div');name.className='actor-name';name.textContent=info.name;
+      lane.append(avatar,name);throwersEl.append(lane);
+      state.actors.push({info,lane,avatar,name,index,x:.5,y:.2});
+    });
+  }
+  function removeItem(item){item.node.remove();state.items=state.items.filter(i=>i!==item);}
+  function clearLevelObjects(){state.items.forEach(i=>i.node.remove());state.items=[];state.hazards.forEach(h=>h.node.remove());state.hazards=[];}
+  function endGame(){
+    state.running=false;cancelAnimationFrame(state.raf);
+    dialog.innerHTML=`<h1>Бутылка попала в Киту!</h1><p>Ты дошла до <b>уровня ${state.level}</b> и поймала <b>${state.caught} из 12 секунд</b>.</p><button class="start" id="again">Начать сначала</button>`;
+    overlay.classList.remove('hidden');document.getElementById('again').addEventListener('click',startGame);
+  }
+  function finishLevel(){
+    state.running=false;cancelAnimationFrame(state.raf);
+    clearLevelObjects();
+    if(state.level===6){
+      dialog.innerHTML=`<h1>Кита справилась!</h1><p>Помогли Ките заработать <b>6 минут массажа</b>!</p><button class="start" id="again">Сыграть ещё раз</button>`;
+      overlay.classList.remove('hidden');document.getElementById('again').addEventListener('click',startGame);return;
+    }
+    dialog.innerHTML=`<h1>Минута заработана!</h1><p>Ты поймала 12 секунд — Ките заработана ещё <b>1 минута массажа</b>.</p><p>Следующий уровень будет сложнее.</p><button class="start" id="continue">Уровень ${state.level+1}</button>`;
+    overlay.classList.remove('hidden');document.getElementById('continue').addEventListener('click',()=>{state.level++;state.caught=0;startLevel();});
+  }
+  function throwItem(forceType,actorOverride,targetOverride){
+    if(!state.actors.length)return;
+    const actor=actorOverride||state.actors[Math.floor(Math.random()*state.actors.length)];
+    const lateFinal=state.level===6&&state.caught>=9;
+    const bottleChance=lateFinal ? .9 : state.level===1 ? .23 : state.level===2 ? .34 : state.level===3 ? .43 : state.level===4 ? .54 : state.level===5 ? .63 : .74;
+    const kind=forceType||(Math.random()<bottleChance?'bottle':'second');
+    const contents=Math.random()<.52?'water':'mud';
+    const node=document.createElement('div');node.className=kind==='second'?'item second':`item bottle ${contents}`;
+    if(kind==='second')node.textContent='1с';else node.textContent=contents==='water'?'В':'Г';
+    game.appendChild(node);
+    const endX=targetOverride??clamp(.08+Math.random()*.84,.08,.92);
+    const base=[2250,2020,1810,1600,1430,1260][state.level-1];
+    const duration=lateFinal?850:base;
+    const curve=(Math.random()-.5)*(state.level>=4 ? .28 : .18);
+    state.items.push({node,kind,contents,actor,start:performance.now(),duration,fromX:actor.x,toX:endX,fromY:actor.y,toY:.77,bend:curve,hit:false});
+  }
+  function startLevel(){
+    clearLevelObjects();setRoster();state.running=true;state.x=.5;state.startedAt=performance.now();state.last=state.startedAt;state.lastThrow=state.startedAt;state.slowUntil=0;
+    girl.style.left='50%';refreshHud();overlay.classList.add('hidden');
+    const sasha=state.actors[0];throwItem('second',sasha,.5);
+    showToast(`Уровень ${state.level}: лови секунды!`);state.raf=requestAnimationFrame(frame);
+  }
+  function catchSecond(item){
+    removeItem(item);state.caught++;girl.classList.add('catch');setTimeout(()=>girl.classList.remove('catch'),220);
+    if(state.caught>=12){refreshHud();finishLevel();return;}
+    showToast('Секунда поймана!');
+    refreshHud();
+  }
+  function breakBottle(item,x){
+    const node=document.createElement('div');node.className=`splat ${item.contents}`;node.style.left=(x*100)+'%';node.style.top='76%';
+    const shard=document.createElement('i');node.append(shard);game.append(node);state.hazards.push({node,x,used:false});
+  }
+  function frame(now){
+    if(!state.running)return;
+    const rect=game.getBoundingClientRect(), dt=Math.min(.04,(now-state.last)/1000||0);state.last=now;
+    const lateFinal=state.level===6&&state.caught>=9;
+    const moveSpeed=(now<state.slowUntil ? .38 : 1.0)*(lateFinal ? 1.05 : 1);
+    if(state.keys.left)state.x-=moveSpeed*dt;
+    if(state.keys.right)state.x+=moveSpeed*dt;
+    state.x=clamp(state.x,.06,.94);girl.style.left=(state.x*100)+'%';
+    state.actors.forEach((actor,index)=>{
+      const phase=(now-state.startedAt)/(state.level>=4?580:850)+actor.info.phase;
+      actor.x=.5+.41*Math.sin(phase);actor.avatar.style.left=(actor.x*100)+'%';actor.name.style.left=(actor.x*100)+'%';
+      const laneRect=actor.lane.getBoundingClientRect();actor.y=(laneRect.top+actor.lane.querySelector('.actor-avatar').getBoundingClientRect().height/2-rect.top)/rect.height;
+    });
+    const interval=[1420,1260,1090,920,800,710][state.level-1]*(lateFinal ? .74 : 1);
+    if(now-state.lastThrow>=interval){throwItem();state.lastThrow=now;}
+    for(const item of [...state.items]){
+      const p=clamp((now-item.start)/item.duration,0,1);
+      const x=item.fromX+(item.toX-item.fromX)*p+Math.sin(Math.PI*p)*item.bend;
+      const y=item.fromY+(item.toY-item.fromY)*p-.12*Math.sin(Math.PI*p);
+      item.node.style.left=`calc(${x*100}% - ${item.kind==='bottle'?12:21}px)`;
+      item.node.style.top=`calc(${y*100}% - ${item.kind==='bottle'?21:21}px)`;
+      if(!item.hit&&p>.72){
+        const close=Math.abs(state.x*rect.width-x*rect.width)<Math.max(34,rect.width*.075);
+        if(close&&item.kind==='second'){item.hit=true;catchSecond(item);if(!state.running)return;continue;}
+        if(close&&item.kind==='bottle'){item.hit=true;girl.classList.add('hit');showToast('Бутылка попала!');endGame();return;}
+      }
+      if(p>=1){if(item.kind==='bottle'&&!item.hit)breakBottle(item,x);removeItem(item);}
+    }
+    for(const hazard of state.hazards){if(!hazard.used&&Math.abs(state.x-hazard.x)<.055){hazard.used=true;state.slowUntil=now+900;showToast('Осторожно, скользко!');}}
+    state.raf=requestAnimationFrame(frame);
+  }
+  function startGame(){state.level=1;state.caught=0;startLevel();}
+  document.getElementById('start').addEventListener('click',startGame);
+  function setDirection(dir,on,button){state.keys[dir]=on;if(button)button.classList.toggle('held',on);}
+  for(const [id,dir] of [['left','left'],['right','right']]){
+    const b=document.getElementById(id);
+    b.addEventListener('pointerdown',e=>{e.preventDefault();b.setPointerCapture(e.pointerId);setDirection(dir,true,b);});
+    const up=e=>{e.preventDefault();setDirection(dir,false,b);};
+    b.addEventListener('pointerup',up);b.addEventListener('pointercancel',up);b.addEventListener('lostpointercapture',()=>setDirection(dir,false,b));
+  }
+  window.addEventListener('keydown',e=>{if(['ArrowLeft','a','A'].includes(e.key)){e.preventDefault();setDirection('left',true,document.getElementById('left'));}if(['ArrowRight','d','D'].includes(e.key)){e.preventDefault();setDirection('right',true,document.getElementById('right'));}});
+  window.addEventListener('keyup',e=>{if(['ArrowLeft','a','A'].includes(e.key))setDirection('left',false,document.getElementById('left'));if(['ArrowRight','d','D'].includes(e.key))setDirection('right',false,document.getElementById('right'));});
+  game.addEventListener('pointerdown',e=>{if(e.target.closest('button')||!state.running)return;state.drag=true;});
+  game.addEventListener('pointermove',e=>{if(!state.drag||!state.running)return;const r=game.getBoundingClientRect();state.x=clamp((e.clientX-r.left)/r.width,.06,.94);girl.style.left=(state.x*100)+'%';});
+  window.addEventListener('pointerup',()=>state.drag=false);
+})();
+</script>
+</body>
+</html>
