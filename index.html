@@ -4,14 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#284e3a">
-  <title>Секунды на весь день</title>
+  <title>Помогите Кристине выиграть</title>
   <style>
     :root { color-scheme: light; --ink:#244638; --cream:#fff9e9; --gold:#ffd65d; --green:#478459; }
     * { box-sizing:border-box; }
     html, body { margin:0; width:100%; height:100%; overflow:hidden; font-family: ui-rounded, "Trebuchet MS", system-ui, sans-serif; background:#d5e9dc; color:var(--ink); }
     body { display:block; }
     button { font:inherit; }
-    .game { position:relative; width:100vw; height:100dvh; min-height:0; overflow:hidden; background:linear-gradient(#b9e2ea 0%,#d9efdc 47%,#92bd70 47%,#73a95f 100%); isolation:isolate; }
+    .game { position:relative; width:100vw; height:100dvh; min-height:0; overflow:hidden; background:#91b47b; isolation:isolate;touch-action:none; }
+    .game:after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,#17312646 0%,transparent 24%,transparent 70%,#1e322b4a 100%),radial-gradient(ellipse at 50% 52%,transparent 40%,#19372625 100%);}
+    .landscape {position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;user-select:none;}
     .sky { position:absolute; inset:0 0 30%; overflow:hidden; }
     .sun { position:absolute; top:9%; right:12%; width:clamp(48px,9vw,92px); aspect-ratio:1; border-radius:50%; background:#ffe89a; box-shadow:0 0 50px #ffe89a88; }
     .cloud { position:absolute; width:130px; height:32px; border-radius:50%; background:#f6fff0d9; filter:drop-shadow(0 4px 2px #ffffff30); }
@@ -36,32 +38,49 @@
     .legs {position:absolute;bottom:-30%;left:20%;width:5px;height:33%;background:#54483c;box-shadow:22px 0 #54483c,46px 0 #54483c;}
     .flower { position:absolute;bottom:12%;width:10px;height:10px;border-radius:50%;background:#fff2ce;box-shadow:0 -8px 0 -2px #fff2ce,8px 0 0 -2px #fff2ce,-8px 0 0 -2px #fff2ce,0 8px 0 -2px #fff2ce; }
     .f1{left:15%}.f2{left:32%;bottom:8%}.f3{right:38%;bottom:10%}
-    .hud { position:absolute; z-index:12; top:max(10px,env(safe-area-inset-top));left:12px;right:12px;min-height:62px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fff9e9ed;border:1px solid #ffffff;border-radius:18px;box-shadow:0 5px 18px #365b3e20; }
-    .brand { font-size:clamp(15px,2.3vw,23px);font-weight:900;letter-spacing:.02em;line-height:1.05; }
-    .sub { font-size:11px;font-weight:700;color:#668174;margin-top:4px; }
+    .hud { position:absolute; z-index:12; top:max(10px,env(safe-area-inset-top));left:12px;right:12px;min-height:62px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;background:#f8f7f0e8;border:1px solid #ffffffb8;border-radius:20px;backdrop-filter:blur(20px) saturate(1.3);-webkit-backdrop-filter:blur(20px) saturate(1.3);box-shadow:0 8px 24px #203b3025,0 1px 0 #ffffff inset; }
+    .brand { max-width:260px;font-size:clamp(13px,3.6vw,17px);font-weight:900;letter-spacing:.01em;line-height:1.1; }
+    .sub { max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;font-weight:700;color:#668174;margin-top:4px; }
     .stats { display:flex;gap:7px;align-items:center; }
     .pill { padding:9px 12px;border-radius:12px;background:#edf4e8;font-size:clamp(12px,1.8vw,16px);font-weight:900;white-space:nowrap; }
+    #level{width:clamp(126px,39vw,195px);min-height:48px;display:grid;place-items:center;border:1px solid #ffffffa8;border-radius:16px;background:linear-gradient(145deg,#315d45,#244b3a);color:#fff6de;font-size:clamp(15px,3.5vw,21px);letter-spacing:.03em;box-shadow:0 4px 12px #244b3a40;}
     .pill.time{background:#fff0c9;color:#73572a;}
     .boy { position:absolute;z-index:6;left:50%;top:clamp(86px,13vh,128px);width:clamp(66px,17vw,94px);height:clamp(66px,17vw,94px);padding:4px;border:3px solid #fff9e9;border-radius:50%;background:#fff8e9;box-shadow:0 0 0 4px #4f8b5c,0 8px 20px #284b3850;transform:translateX(-50%); }
     .boy img {width:100%;height:100%;object-fit:cover;object-position:35% 24%;border-radius:50%;}
     .boy-tag { position:absolute;left:50%;top:calc(clamp(86px,13vh,128px) + clamp(66px,17vw,94px) + 6px);z-index:6;background:#fff9e9e8;border-radius:99px;padding:5px 10px;font-size:10px;font-weight:900;transform:translateX(-50%);white-space:nowrap; }
-    .thrower-lanes {position:absolute;z-index:6;top:clamp(83px,11vh,108px);left:0;right:0;pointer-events:none;}
-    .actor-lane {position:relative;height:clamp(52px,7.2vh,62px);}
-    .actor-avatar {position:absolute;left:50%;top:0;width:clamp(42px,11vw,51px);height:clamp(42px,11vw,51px);padding:2px;border:2px solid #fff8e8;border-radius:50%;background:#fff8e8;overflow:hidden;transform:translateX(-50%);box-shadow:0 0 0 2px #4e8559,0 4px 10px #284b3845;}
+    .thrower-lanes {position:absolute;z-index:7;top:212px;left:0;right:0;height:100px;pointer-events:none;}
+    .actor-lane {position:absolute;inset:0;height:100%;}
+    .actor-avatar {position:absolute;left:50%;top:0;width:clamp(42px,11vw,51px);height:clamp(42px,11vw,51px);padding:2px;border:2px solid #fff8e8;border-radius:50%;background:#fff8e8;overflow:hidden;transform:translateX(-50%);box-shadow:0 0 0 2px #4e8559,0 4px 10px #284b3845;animation:avatarBob 1.8s ease-in-out infinite;transition:width .3s ease,height .3s ease,border-width .3s,box-shadow .3s;}
     .actor-avatar img {width:100%;height:100%;object-fit:cover;object-position:35% 24%;border-radius:50%;}
-    .actor-name {position:absolute;left:50%;top:calc(clamp(42px,11vw,51px) - 1px);transform:translateX(-50%);padding:2px 7px;border-radius:20px;background:#fff9e9f2;color:#315342;font-size:clamp(9px,2.3vw,11px);font-weight:900;line-height:1.2;white-space:nowrap;box-shadow:0 2px 5px #284b3820;}
-    .hero-label {position:absolute;z-index:8;left:50%;bottom:clamp(68px,10vh,92px);transform:translateX(-50%);background:#fff9e9ed;border-radius:99px;padding:4px 12px;font-size:12px;font-weight:900;color:#315342;}
-    .round-info {position:absolute;z-index:9;top:68px;left:8px;right:8px;padding:6px 9px;border-radius:13px;background:#fff9e9ed;text-align:center;color:#345741;font-size:clamp(10px,2.7vw,12px);font-weight:800;line-height:1.35;box-shadow:0 4px 12px #284b3820;}
-    .countdown {position:absolute;z-index:10;left:50%;top:48%;transform:translate(-50%,-50%);min-width:150px;padding:10px 15px;border-radius:20px;background:#fff9e9e8;text-align:center;color:#315342;box-shadow:0 7px 22px #284b3840;pointer-events:none;}
+    .actor-avatar.throwing{animation:throwPose .38s ease-in-out 2;box-shadow:0 0 0 3px #ffd66c,0 0 25px #ffd66caa;}
+    @keyframes throwPose{50%{transform:translate(-50%,-5px) scale(1.1)}}
+    .actor-name {position:absolute;left:50%;top:calc(clamp(42px,11vw,51px) - 1px);transform:translateX(-50%);padding:2px 7px;border-radius:20px;background:#fff9e9f2;color:#315342;font-size:clamp(9px,2.3vw,11px);font-weight:900;line-height:1.2;white-space:nowrap;box-shadow:0 2px 5px #284b3820;transition:top .3s ease,font-size .3s ease,padding .3s ease;}
+    .game.prep .actor-avatar{width:clamp(68px,18vw,92px);height:clamp(68px,18vw,92px);border-width:4px;box-shadow:0 0 0 4px #4e8559,0 10px 25px #284b3860;}
+    .game.prep .actor-name{top:calc(clamp(68px,18vw,92px) - 2px);padding:4px 10px;font-size:clamp(11px,2.8vw,13px);}
+    .game.prep .actor-avatar.throwing{box-shadow:0 0 0 5px #ffd66c,0 0 34px #ffd66cdd;}
+    .hero-label {position:absolute;z-index:8;left:50%;bottom:calc(clamp(86px,11vh,104px) + clamp(155px,25vh,220px) + 2px);transform:translateX(-50%);background:#fff9e9ed;border-radius:99px;padding:4px 12px;font-size:11px;font-weight:900;color:#315342;transition:opacity .28s,visibility .28s;}
+    .round-info {position:absolute;z-index:9;top:calc(max(10px,env(safe-area-inset-top)) + 82px);left:50%;right:auto;width:min(680px,calc(100% - 28px));max-height:min(38vh,310px);overflow:auto;padding:15px 18px;border:1px solid #ffffffd0;border-radius:24px;background:#f8f7f0f5;backdrop-filter:blur(22px) saturate(1.4);-webkit-backdrop-filter:blur(22px) saturate(1.4);text-align:left;color:#345741;font-size:14px;font-weight:800;line-height:1.38;box-shadow:0 18px 42px #203b3045,0 1px 0 #ffffff inset;transform:translateX(-50%);transition:opacity .25s,transform .25s;}
+    .round-topline{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;color:#9a773a;font-size:11px;font-weight:1000;letter-spacing:.1em;}
+    .round-actors{display:grid;grid-template-columns:1fr;gap:8px;}
+    .round-actors.single .round-actor{grid-column:1/-1;}
+    .round-actor{display:flex;align-items:center;gap:12px;min-width:0;padding:7px 9px;border:1px solid #e9e3d3;border-radius:16px;background:#fffdf7;color:#667366;font-size:13px;}
+    .round-actor img{width:48px;height:48px;flex:0 0 48px;object-fit:cover;object-position:35% 24%;border:3px solid #fff;border-radius:50%;box-shadow:0 0 0 1px #dfd2b4,0 3px 9px #52634a25;}
+    .round-actor b{color:#315743;white-space:nowrap;}
+    .round-hero{padding-left:8px;border-left:1px solid #e3ddcb;}
+    .round-hero img{box-shadow:0 0 0 1px #d8ba6a,0 2px 5px #52634a25;}
+    .round-goal{display:flex;justify-content:space-between;gap:8px;margin-top:8px;padding-top:8px;border-top:1px solid #e3ddcb;color:#9a773a;font-size:12px;font-weight:1000;}
+    .round-goal span{color:#788375;font-size:10px;font-weight:800;}
+    .round-info.hidden-info {opacity:0;transform:translate(-50%,-8px);pointer-events:none;}
+    .countdown {position:absolute;z-index:10;left:50%;top:48%;transform:translate(-50%,-50%);min-width:150px;padding:14px 18px;border:1px solid #ffffffd6;border-radius:24px;background:#f8f7f0ed;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);text-align:center;color:#315342;box-shadow:0 15px 34px #203b3040,0 1px 0 #ffffff inset;pointer-events:none;animation:dialogIn .28s ease-out both;}
     .countdown strong {display:block;font-size:44px;line-height:1;color:#a75c3e;}
     .countdown span {display:block;margin-top:4px;font-size:12px;font-weight:900;letter-spacing:.05em;}
     .thrower { position:absolute; z-index:5; left:50%;top:calc(clamp(86px,13vh,128px) + clamp(66px,17vw,94px) + 26px);font-size:22px;transform:translateX(-50%);filter:drop-shadow(0 4px 2px #344d3340);transition:left .24s ease-out; }
-    .girl { position:absolute; z-index:6; bottom:clamp(74px,11vh,105px); left:50%; height:clamp(220px,38vh,345px); width:auto; max-width:49%; object-fit:contain; object-position:bottom; transform:translateX(-50%); transition:filter .14s; filter:drop-shadow(0 8px 4px #355e3a42); user-select:none; -webkit-user-drag:none; }
+    .girl { position:absolute; z-index:6; bottom:clamp(86px,11vh,104px); left:50%; height:clamp(155px,25vh,220px); width:auto; max-width:44%; object-fit:contain; object-position:bottom; transform:translateX(-50%); transition:filter .14s; filter:drop-shadow(0 8px 4px #355e3a42); user-select:none; -webkit-user-drag:none; }
     .girl.catch { filter:drop-shadow(0 0 14px #ffe276); }
     .girl.hit { animation:hit .35s ease-in-out 2; }
     @keyframes hit {50%{filter:brightness(1.8) drop-shadow(0 0 15px #59dff3);transform:translateX(-50%) rotate(7deg)}}
     .item {position:absolute;z-index:7;display:grid;place-items:center;pointer-events:none;will-change:transform;}
-    .second {width:42px;height:42px;border:3px solid #fff5cf;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3a4,#ffc83f);color:#765314;font-size:12px;font-weight:1000;box-shadow:0 0 18px #ffd64d;}
+    .second {width:42px;height:42px;border:3px solid #fff5cf;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3a4,#ffc83f);color:#765314;font-size:12px;font-weight:1000;box-shadow:0 0 18px #ffd64d;animation:secondPulse .9s ease-in-out infinite alternate;}
     .water {width:38px;height:52px;border:3px solid #e7fbff;border-radius:12px 12px 15px 15px;background:linear-gradient(135deg,#d9fbff,#69cce1 65%,#319db7);box-shadow:0 0 12px #91e2f3;transform:rotate(17deg);}
     .item.water:before {content:"";position:absolute;top:7px;width:19px;height:4px;border-radius:4px;background:#f4ffff;}
     .bottle {display:grid;place-items:center;width:24px;height:42px;border:2px solid #efffff;border-radius:7px 7px 9px 9px;box-shadow:0 2px 9px #233b4b60;transform:rotate(18deg);color:#fff;font-size:9px;font-weight:900;text-shadow:0 1px 2px #334;}
@@ -81,7 +100,7 @@
     .item.coinjar .coin-mark{position:absolute;right:-9px;top:-11px;font-size:20px;}
     .coin-mark{position:absolute;right:-3px;top:-4px;font-size:20px;}
     @keyframes spinThrow {to{transform:rotate(24deg) translateY(-3px)}}
-    .splat {position:absolute;z-index:5;width:58px;height:17px;border-radius:55% 48% 42% 60%;transform:translateX(-50%);opacity:.95;pointer-events:none;}
+    .splat {position:absolute;z-index:5;width:58px;height:17px;border-radius:55% 48% 42% 60%;transform:translateX(-50%);opacity:.95;pointer-events:none;animation:splatIn .34s cubic-bezier(.16,.8,.3,1) both;}
     .splat.water {background:#48b9d3;box-shadow:0 0 0 3px #d9f7ff55;}
     .splat.mud {background:#795139;box-shadow:0 0 0 3px #d4b49766;}
     .splat.glass:before,.splat.glass:after {content:"";position:absolute;bottom:4px;width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:15px solid #eaf0e8;filter:drop-shadow(0 1px 1px #33443c);}
@@ -93,76 +112,144 @@
     .splat.coin-debris{width:48px;height:22px;background:#a2d9d5;box-shadow:0 0 0 2px #f2ffff77;font-size:19px;}
     .toast {position:absolute;z-index:13;left:50%;top:19%;transform:translate(-50%,-8px);padding:9px 14px;border-radius:99px;background:#fff9e9;color:#28513d;font-size:14px;font-weight:900;opacity:0;transition:.2s;pointer-events:none;white-space:nowrap;}
     .toast.show {opacity:1;transform:translate(-50%,0)}
-    .controls {position:absolute;z-index:11;bottom:max(12px,env(safe-area-inset-bottom));left:0;right:0;display:flex;justify-content:space-between;align-items:end;padding:0 16px;pointer-events:none;}
-    .move {pointer-events:auto;display:grid;grid-template-columns:1fr 1fr;gap:9px;}
-    .move button {width:clamp(60px,16vw,78px);height:clamp(56px,12vw,72px);border:2px solid #fff;background:#fff9e9ed;color:#315c43;border-radius:19px;font-size:28px;font-weight:900;box-shadow:0 5px 14px #284b3830;touch-action:none;user-select:none;-webkit-tap-highlight-color:transparent;}
-    .move button:active,.move button.held {background:#ffe17a;transform:translateY(2px);}
-    .hint {pointer-events:none;padding:10px 12px;background:#fff9e9e8;border-radius:13px;font-size:12px;font-weight:800;color:#476853;max-width:45%;text-align:center;}
-    .overlay {position:absolute;z-index:20;inset:0;display:grid;place-items:center;padding:20px;background:#1d3b31a8;backdrop-filter:blur(4px);}
-    .dialog {width:min(440px,94%);padding:25px 24px 22px;border-radius:25px;background:#fff9e9;text-align:center;box-shadow:0 18px 60px #162f2680;}
-    .dialog h1{margin:0 0 9px;font-size:clamp(25px,6vw,36px);color:#284b39;}
-    .dialog p{margin:8px 0;color:#557060;line-height:1.45;font-size:15px;}
-    .start {margin-top:14px;padding:14px 24px;border:0;border-radius:15px;background:#4d8d5d;color:white;font-size:18px;font-weight:900;box-shadow:0 5px 0 #346a46;}
-    .start:active{transform:translateY(2px);box-shadow:0 3px 0 #346a46;}
+    .controls {position:absolute;z-index:11;bottom:max(12px,env(safe-area-inset-bottom));left:0;right:0;display:flex;justify-content:center;align-items:center;padding:0 14px;pointer-events:none;transition:opacity .28s,visibility .28s;}
+    .game.playing .hero-label,.game.playing .controls{opacity:0;visibility:hidden;}
+    .hint {pointer-events:none;padding:10px 16px;background:#fff9e9e8;border:1px solid #ffffff;border-radius:99px;font-size:12px;font-weight:900;color:#365b42;max-width:94%;text-align:center;box-shadow:0 5px 16px #284b3825;}
+    .overlay {position:absolute;z-index:20;inset:0;display:grid;place-items:center;padding:20px;background:#1d3b31a8;backdrop-filter:blur(4px);animation:overlayIn .3s ease both;}
+    .dialog {position:relative;width:min(680px,96%);max-height:calc(100dvh - 28px);overflow:auto;padding:28px;border:1px solid #fffdf2;border-radius:28px;background:linear-gradient(145deg,#fffdf5,#f3eddc);text-align:left;box-shadow:0 24px 75px #152e2578,0 2px 0 #fff8 inset;animation:dialogIn .45s cubic-bezier(.2,.8,.2,1) both;}
+    .dialog h1{margin:0;font-size:clamp(27px,6.4vw,39px);line-height:1.02;letter-spacing:-.04em;color:#284b39;}
+    .dialog p{margin:8px 0;color:#557060;line-height:1.45;font-size:14px;}
+    .eyebrow{display:flex;align-items:center;gap:8px;margin:0 0 10px;color:#8a6b3e;font-size:10px;font-weight:1000;letter-spacing:.16em;text-transform:uppercase;}
+    .eyebrow:before{content:"";width:23px;height:1px;background:#c8a661;}
+    .menu-lead{display:flex;align-items:center;gap:14px;margin:17px 0 13px;padding:14px 15px;border-radius:20px;background:linear-gradient(110deg,#244d3c,#396c4d);color:#fff8e7;box-shadow:0 9px 22px #264c3826;}
+    .lead-seal{flex:0 0 56px;width:56px;height:56px;display:grid;place-items:center;border:1px solid #ffe8a2;border-radius:50%;background:#ffdb7750;color:#ffe6a0;font-size:21px;font-weight:1000;box-shadow:0 0 0 5px #ffffff10;}
+    .menu-lead strong{display:block;font-size:15px;line-height:1.2;color:#fff7e3;}.menu-lead span{display:block;margin-top:5px;color:#dce9d4;font-size:12px;line-height:1.35;}
+    .section-kicker{display:flex;align-items:center;gap:8px;margin:15px 0 8px;color:#315743;font-size:11px;font-weight:1000;letter-spacing:.1em;text-transform:uppercase;}
+    .section-kicker:after{content:"";height:1px;flex:1;background:#dedac9;}
+    .rules-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
+    .rule-card{min-height:78px;padding:9px;border:1px solid #e6e0cf;border-radius:15px;background:#fffdf7;}
+    .rule-card i{display:block;margin-bottom:4px;color:#b18335;font-style:normal;font-size:18px;}.rule-card b{display:block;color:#315743;font-size:11px;}.rule-card span{display:block;margin-top:3px;color:#778578;font-size:10px;line-height:1.25;}
+    .enemy-grid{display:grid;grid-template-columns:1fr;gap:8px;}
+    .enemy-card{display:flex;align-items:center;gap:13px;min-width:0;padding:10px 13px;border:1px solid #e8e2d2;border-radius:18px;background:#fffdf7;}
+    .enemy-card img{flex:0 0 58px;width:58px;height:58px;border:3px solid #fff;border-radius:50%;object-fit:cover;object-position:35% 24%;box-shadow:0 0 0 1px #d5c8a6,0 4px 10px #435a3930;}
+    .enemy-card b{display:block;color:#315743;font-size:15px;line-height:1.2;}.enemy-card span{display:block;margin-top:4px;color:#586c5d;font-size:13px;line-height:1.35;}
+    .enemy-card em{color:#a17838;font-style:normal;font-weight:900;}
+    .menu-note{margin:11px 0!important;padding-left:10px;border-left:2px solid #d6ad58;color:#6f7c6b!important;font-size:11px!important;}
+    .about-panel{display:grid;grid-template-columns:1fr auto;gap:8px 12px;margin:11px 0;padding:11px 13px;border:1px solid #e4dfd0;border-radius:16px;background:#ffffffa6;}
+    .about-panel b{display:block;margin-bottom:3px;color:#315743;font-size:10px;letter-spacing:.07em;text-transform:uppercase;}
+    .about-panel span{display:block;color:#526858;font-size:13px;line-height:1.4;}
+    .about-credit{align-self:center;padding-left:10px;border-left:1px solid #e2ddcf;text-align:right;white-space:nowrap;}
+    .intro-step{display:none;animation:stepIn .24s ease both;}.intro-step.active{display:block;}
+    .step-progress{display:flex;align-items:center;justify-content:space-between;margin:0 0 12px;color:#8a6b3e;font-size:10px;font-weight:1000;letter-spacing:.12em;text-transform:uppercase;}
+    .step-dots{display:flex;gap:5px;}.step-dots i{width:7px;height:7px;border-radius:9px;background:#d9d3c4;transition:all .2s;}.step-dots i.active{width:21px;background:#4b8055;}
+    .step-footer{display:flex;align-items:center;gap:9px;margin-top:16px;}.step-footer .start{flex:1;margin-top:0;}
+    .step-back{flex:0 0 auto;padding:13px 14px;border:1px solid #d9d6ca;border-radius:15px;background:#ffffffa8;color:#4a6854;font:inherit;font-size:13px;font-weight:900;cursor:pointer;}
+    .step-intro-art{display:flex;align-items:center;justify-content:center;gap:11px;margin:15px 0;padding:15px 12px;border:1px solid #e5dfcf;border-radius:20px;background:linear-gradient(130deg,#f6f2e5,#e7eddc);}
+    .step-intro-art img{width:92px;height:112px;object-fit:contain;filter:drop-shadow(0 5px 5px #344d3340);}
+    .step-intro-art span{color:#405d49;font-size:14px;line-height:1.5;}
+    @keyframes stepIn{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
+    .result-dialog{text-align:center;padding:29px 25px 24px;}
+    .result-medal{width:72px;height:72px;display:grid;place-items:center;margin:1px auto 12px;border:1px solid #ffdfa0;border-radius:50%;background:radial-gradient(circle at 35% 27%,#fff5bd,#eebd55);color:#725324;font-size:32px;box-shadow:0 0 0 7px #f1e4c7,0 8px 22px #75592c30;}
+    .result-dialog .eyebrow{justify-content:center;}.result-dialog .eyebrow:after{content:"";width:23px;height:1px;background:#c8a661;}
+    .result-dialog h1{font-size:clamp(27px,6vw,36px);}.result-dialog p{font-size:14px;}
+    .result-stat{margin:16px 0;padding:13px;border:1px solid #e7dec8;border-radius:16px;background:#fffdf7;color:#526e5a;font-size:13px;line-height:1.45;}
+    .name-field {display:block;margin:14px 0 4px;text-align:left;color:#365746;font-size:13px;font-weight:900;}
+    .name-input {display:block;width:100%;margin-top:6px;padding:12px 13px;border:2px solid #d2dfcf;border-radius:13px;background:#fff;color:#244638;font:inherit;font-size:16px;outline:none;}
+    .name-input:focus {border-color:#579269;box-shadow:0 0 0 3px #57926925;}
+    .start {width:100%;margin-top:12px;padding:15px 22px;border:1px solid #c0d99f;border-radius:16px;background:linear-gradient(180deg,#63975e,#3d7650);color:white;font-size:16px;font-weight:1000;letter-spacing:.01em;box-shadow:0 5px 0 #2d5d40,0 10px 20px #355f3c25;cursor:pointer;transition:transform .16s,filter .16s,box-shadow .16s;}
+    .start:hover{filter:brightness(1.06);}.start:active{transform:translateY(3px);box-shadow:0 2px 0 #2d5d40;}
     .small{font-size:12px!important;color:#809286!important;}
     .hidden{display:none!important;}
+    @keyframes avatarBob{50%{transform:translate(-50%,-3px)}}
+    @keyframes secondPulse{to{box-shadow:0 0 26px #ffe17b,0 0 0 5px #ffe17b35;transform:scale(1.07)}}
+    @keyframes splatIn{0%{opacity:0;transform:translateX(-50%) scale(.35)}70%{opacity:1;transform:translateX(-50%) scale(1.14)}100%{opacity:.95;transform:translateX(-50%) scale(1)}}
+    @keyframes overlayIn{from{opacity:0}to{opacity:1}}
+    @keyframes dialogIn{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
     @media (max-width:600px) {
       .hud{left:8px;right:8px;min-height:58px;padding:8px 9px;border-radius:15px;}
       .sub{font-size:9px;}.pill{padding:8px 9px;font-size:12px;}
-      .thrower-lanes{top:140px;}
-      .actor-lane{height:clamp(51px,7vh,58px);}
+      .thrower-lanes{top:202px;}
+      .actor-lane{height:100%;}
       .actor-avatar{width:45px;height:45px;}
       .actor-name{top:42px;font-size:10px;}
-      .round-info{top:66px;min-height:58px;padding:6px 8px;}
+      .game.prep .actor-avatar{width:68px;height:68px;}
+      .game.prep .actor-name{top:66px;}
+      .round-info{top:calc(max(10px,env(safe-area-inset-top)) + 70px);max-height:38vh;padding:11px 12px;font-size:12px;}
+      .round-topline{font-size:9px;margin-bottom:6px;}.round-actor{gap:9px;padding:6px;font-size:11px;}.round-actor img{width:40px;height:40px;flex-basis:40px;}.round-goal{font-size:10px;}.round-goal span{font-size:9px;}
+      .game.prep .thrower-lanes{top:39vh;}
       .countdown{top:48%;min-width:142px;}
-      .girl{height:clamp(220px,37vh,300px);max-width:55%;bottom:clamp(78px,12vh,102px);}
-      .hero-label{bottom:clamp(70px,10.5vh,90px);}
+      .girl{height:clamp(155px,25vh,220px);max-width:44%;bottom:clamp(86px,11vh,104px);}
+      .hero-label{bottom:calc(clamp(86px,11vh,104px) + clamp(155px,25vh,220px) + 2px);}
       .controls{padding:0 10px;bottom:max(10px,env(safe-area-inset-bottom));}
-      .hint{font-size:10px;max-width:43%;padding:8px 9px;}
-      .move{gap:7px;}.move button{width:62px;height:58px;border-radius:16px;}
-      .path{left:30%;width:48%;}
-      .house{right:10%;bottom:31%;}
-      .cow{right:22%;}
+      .hint{font-size:11px;max-width:94%;padding:9px 14px;}
+      .dialog{padding:23px 18px;border-radius:24px;}
+      .rules-grid{gap:5px;}.rule-card{padding:8px 7px;min-height:76px;}
+      .enemy-grid{gap:7px;}.enemy-card{gap:10px;padding:8px 10px;}
+      .enemy-card img{width:50px;height:50px;flex-basis:50px;}.enemy-card b{font-size:14px}.enemy-card span{font-size:12px}
+      .step-intro-art img{width:78px;height:96px}.step-intro-art span{font-size:13px}
+      .result-dialog{padding:25px 18px 20px;}
     }
     @media (orientation:landscape) and (max-height:500px) {
       .hud{min-height:48px;padding:5px 10px;}.sub{display:none;}
-      .girl{height:54vh;bottom:64px;}
-      .controls{bottom:8px;}.move button{height:48px;width:62px;}
-      .thrower-lanes{top:126px;}.actor-lane{height:44px;}.actor-avatar{width:38px;height:38px;}.actor-name{top:35px;}
-      .round-info{top:56px;min-height:60px;}.countdown{top:50%;}
+      .girl{height:34vh;bottom:64px;}
+      .controls{bottom:8px;}
+      .round-info{top:calc(max(6px,env(safe-area-inset-top)) + 58px);max-height:34vh;padding:7px 8px;font-size:10px;}.round-topline{font-size:8px;margin-bottom:3px;}.round-actor{font-size:9px;gap:6px;padding:3px 5px;}.round-actor img{width:26px;height:26px;flex-basis:26px;}.round-goal{margin-top:3px;padding-top:3px;font-size:8px;}.round-goal span{font-size:7px;}
+      .thrower-lanes{top:168px;height:70px;}.game.prep .thrower-lanes{top:38vh}.actor-lane{height:100%;}.actor-avatar{width:38px;height:38px;}.actor-name{top:35px;}.game.prep .actor-avatar{width:52px;height:52px;}.game.prep .actor-name{top:50px;}.countdown{top:50%;}
     }
   </style>
 </head>
 <body>
-<main class="game" id="game" aria-label="Игра Секунды на весь день">
-  <div class="sky"><div class="sun"></div><div class="cloud c1"></div><div class="cloud c2"></div></div>
-  <div class="hill"></div><div class="hill back"></div><div class="grass"></div><div class="hill front"></div><div class="path"></div>
-  <div class="tree t1"></div><div class="tree t2"></div><div class="tree t3"></div><div class="tree t4"></div>
-  <div class="house"><i class="window w1"></i><i class="window w2"></i></div>
-  <div class="cow"><i class="legs"></i></div><i class="flower f1"></i><i class="flower f2"></i><i class="flower f3"></i>
+<main class="game" id="game" aria-label="Помогите Кристине выиграть">
+  <img class="landscape" src="assets/village.svg" alt="Деревенская дорога, дома и лес" draggable="false">
   <header class="hud">
-    <div><div class="brand">МИНУТЫ МАССАЖА</div><div class="sub">ИГРА: ЗЛОЙ САШКА</div></div>
-    <div class="stats"><div class="pill" id="level">МИНУТА 1</div><div class="pill time" id="score">0 / 12</div></div>
+    <div><div class="brand">ПОМОГИТЕ КРИСТИНЕ ВЫИГРАТЬ</div><div class="sub" id="playerTag">Введите имена игроков</div></div>
+    <div class="stats"><div class="pill" id="level">УРОВЕНЬ 1</div><div class="pill time" id="score">0 / 12</div></div>
   </header>
   <div class="round-info" id="roundInfo">Загружаем раунд…</div>
   <div class="countdown hidden" id="countdown"><strong id="countdownValue">10</strong><span id="countdownLabel">БРОСКИ ЧЕРЕЗ</span></div>
   <div class="thrower-lanes" id="throwers" aria-label="Те, кто бросает"></div>
   <img class="girl" id="girl" src="assets/girl.png" alt="Фото девушки — аватар игрока" draggable="false">
-  <div class="hero-label">КИТА</div>
+  <div class="hero-label">КРИСТИНА</div>
   <div class="toast" id="toast"></div>
   <div class="controls">
-    <div class="move"><button id="left" aria-label="Влево">←</button><button id="right" aria-label="Вправо">→</button></div>
-    <div class="hint">Уклоняйся от воды · лови секунды</div>
+    <div class="hint">Веди пальцем по экрану, чтобы двигать Кристину</div>
   </div>
   <section class="overlay" id="overlay">
-    <div class="dialog" id="dialog">
-      <h1>Злой Сашка</h1>
-      <p>Помогите Ките заработать минуты на массаж! Ловите 12 секунд на каждом уровне и уворачивайтесь от бутылок с водой и грязью.</p>
-      <p>Бутылки разбиваются при падении, а лужи и осколки остаются на поляне до конца уровня.</p>
-      <p><b>На телефоне:</b> удерживайте стрелки снизу или ведите пальцем по поляне.</p>
-      <button class="start" id="start">Начать игру</button>
-      <p class="small">Автор игры: Злой Сашка</p>
-      <p class="small">Для начала коснись кнопки «Начать игру».</p>
+    <div class="dialog menu-dialog" id="dialog">
+      <div class="step-progress"><span id="stepNumber">01 / 03</span><span class="step-dots"><i class="active"></i><i></i><i></i></span></div>
+      <section class="intro-step active" data-step="0">
+        <div class="eyebrow">Деревенская история</div>
+        <h1>Помогите Кристине выиграть</h1>
+        <div class="menu-lead"><div class="lead-seal">120′</div><div><strong>До 120 минут массажа</strong><span>Лови золотые секунды и помоги Кристине продержаться.</span></div></div>
+        <div class="about-panel"><div><b>О чём игра</b><span>Кристина стоит на деревенской поляне. Веди её пальцем, уворачивайся от бросков и лови секунды.</span></div><div class="about-credit"><b>Автор идеи</b><span>Сашка Кисилёв</span></div></div>
+        <div class="step-intro-art"><img src="assets/girl.png" alt="Кристина"><span>История и герои — по вашей задумке.<br>Впереди лесная поляна и команда противников.</span></div>
+      </section>
+      <section class="intro-step" data-step="1">
+        <div class="eyebrow">Шаг второй · правила</div>
+        <h1>Как играть</h1>
+        <div class="section-kicker">В каждом раунде</div>
+        <div class="rules-grid">
+          <div class="rule-card"><i>✦</i><b>Поймай 12 секунд</b><span>Это одна минута массажа.</span></div>
+          <div class="rule-card"><i>◌</i><b>Увернись от броска</b><span>Только прямое касание — проигрыш.</span></div>
+          <div class="rule-card"><i>⌛</i><b>Будь готова</b><span>Перед атаками есть 10 секунд.</span></div>
+        </div>
+        <p>Веди пальцем по экрану, чтобы двигать Кристину. Промахнувшиеся предметы остаются на поляне; лужи замедляют её. С каждым уровнем атаки становятся быстрее.</p>
+      </section>
+      <section class="intro-step" data-step="2">
+        <div class="eyebrow">Шаг третий · противники</div>
+        <h1>Кто бросает</h1>
+        <div class="enemy-grid">
+          <div class="enemy-card"><img src="assets/boy.png" alt="Гурбан"><div><b>Гурбан <em>· ур. 1</em></b><span>Бутылки с водой: разобьются на лужу и осколки. Ещё он кидает заметные какашки 💩.</span></div></div>
+          <div class="enemy-card"><img src="assets/kresteno.png" alt="Крестено"><div><b>Крестено <em>· ур. 4</em></b><span>Бросает только скользкие банановые кожурки.</span></div></div>
+          <div class="enemy-card"><img src="assets/makpal.png" alt="Макпал"><div><b>Макпал <em>· ур. 5</em></b><span>Метает колбаски — следи за дугой полёта.</span></div></div>
+          <div class="enemy-card"><img src="assets/nastya.png" alt="Настя"><div><b>Настя <em>· ур. 6</em></b><span>Бросает банки с монетами и осколки.</span></div></div>
+        </div>
+        <p class="menu-note">Уровни 1–4 лёгкие, пятый сложнее, шестой — самый трудный.</p>
+        <label class="name-field" for="playerNames">Имена игроков
+          <input class="name-input" id="playerNames" type="text" maxlength="40" autocomplete="nickname" placeholder="Например: Алия, Дамир" required>
+        </label>
+      </section>
+      <div class="step-footer"><button class="step-back hidden" id="stepBack" type="button">← Назад</button><button class="start" id="stepNext" type="button">Прочитал(а), дальше&nbsp; →</button><button class="start hidden" id="start" type="button">Начать игру&nbsp; →</button></div>
     </div>
   </section>
 </main>
@@ -172,49 +259,80 @@
   const overlay=document.getElementById('overlay'), dialog=document.getElementById('dialog');
   const levelEl=document.getElementById('level'), scoreEl=document.getElementById('score'), toastEl=document.getElementById('toast');
   const roster=[
-    {name:'Гурбан',src:'assets/boy.png',first:1,phase:0,throws:['waterBottle','poop'],description:'Гурбан — бутылки с водой и 💩 какашки'},
-    {name:'Крестено',src:'assets/kresteno.png',first:4,phase:1.9,throws:['banana','poop'],description:'Крестено — банановые кожурки и 💩 какашки'},
-    {name:'Макпал',src:'assets/makpal.png',first:5,phase:3.1,throws:['sausage'],description:'Макпал — колбаски'},
-    {name:'Настя',src:'assets/nastya.png',first:6,phase:4.4,throws:['coinjar'],description:'Настя — банки с монетами'}
+    {name:'Гурбан',src:'assets/boy.png',first:1,phase:0,throws:['waterBottle','poop'],description:'бутылки с водой (лужа и осколки) + какашки 💩'},
+    {name:'Крестено',src:'assets/kresteno.png',first:4,phase:1.9,throws:['banana'],description:'только скользкие банановые кожурки'},
+    {name:'Макпал',src:'assets/makpal.png',first:5,phase:3.1,throws:['sausage'],description:'колбаски — уворачивайся от прямого попадания'},
+    {name:'Настя',src:'assets/nastya.png',first:6,phase:4.4,throws:['coinjar'],description:'банки с монетами и острые осколки'}
   ];
-  const state={running:false,x:.5,keys:{left:false,right:false},actors:[],items:[],hazards:[],caught:0,level:1,lastThrow:0,lastSecond:0,last:0,startedAt:0,warmupUntil:0,raf:0,toastTimer:0,drag:false,slowUntil:0};
+  const state={running:false,x:.5,playerNames:'',keys:{left:false,right:false},actors:[],items:[],hazards:[],caught:0,level:1,lastThrow:0,lastSecond:0,last:0,startedAt:0,warmupUntil:0,raf:0,toastTimer:0,drag:false,slowUntil:0};
   const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
   function showToast(text){toastEl.textContent=text;toastEl.classList.add('show');clearTimeout(state.toastTimer);state.toastTimer=setTimeout(()=>toastEl.classList.remove('show'),1100);}
-  function refreshHud(){levelEl.textContent=`МИНУТА ${state.level}`;scoreEl.textContent=`${state.caught} / 12`;}
+  function refreshHud(){levelEl.textContent=`УРОВЕНЬ ${state.level}`;scoreEl.textContent=`${state.caught} / 12`;}
   function activeRoster(){return roster.filter(actor=>state.level>=actor.first);}
+  function levelTiming(){
+    if(state.level<=4)return {throwEvery:1800,flight:2500,secondEvery:1500};
+    if(state.level===5)return {throwEvery:1050,flight:1350,secondEvery:1150};
+    const later=Math.max(0,state.level-6);
+    return {throwEvery:Math.max(380,570*Math.pow(.97,Math.min(later,18))),flight:Math.max(620,800*Math.pow(.985,Math.min(later,14))),secondEvery:Math.max(680,900*Math.pow(.985,Math.min(later,14)))};
+  }
+  function nextLevelStory(level){
+    const arrivals={
+      2:'Гурбан не ожидал такой ловкости и решил продолжить один. Он меняет ритм бросков, но пока не зовёт подмогу.',
+      3:'Гурбан снова вышел один и теперь целится ниже — к ногам Кристины. Этот раунд остаётся спокойным: поймай секунды и следи за полётом.',
+      4:'Гурбан понял, что одному не справиться, и позвал Крестено. Она тоже хочет помешать Кристине выиграть массаж и бросает только скользкие банановые кожурки.',
+      5:'Крестено не смогла остановить Кристину и позвала Макпал. Макпал выходит с колбасками, а Гурбан продолжает бросать бутылки с водой и какашки 💩.',
+      6:'Макпал решила позвать Настю, чтобы Кристина не выиграла массаж. Настя кидает банки с монетами — теперь на поляне вся четвёрка, и этот раунд станет самым тяжёлым.'
+    };
+    if(arrivals[level])return arrivals[level];
+    const variations=[
+      'Гурбан выбирает новый угол броска и подаёт команде знак начать атаку с разных сторон.',
+      'Крестено меняет место у дорожки и готовит кожурки там, где Кристина ловила секунды.',
+      'Макпал выжидает момент и запускает колбаски вслед за очередной золотой секундой.',
+      'Настя встряхивает банку с монетами и сбивает привычный ритм команды.',
+      'Противники расходятся по поляне и больше не бросают по очереди.',
+      'Команда перестраивает атаку: теперь траектории пересекаются у самых ног Кристины.',
+      'Гурбан торопит остальных — следующая атака начнётся раньше предыдущей.',
+      'Настя подаёт сигнал к короткому натиску, пока Кристина тянется за золотой секундой.'
+    ];
+    return `${variations[(level-7)%variations.length]} Раунд ${level}: темп снова вырос.`;
+  }
   function updateRoundInfo(){
     const active=activeRoster();
-    const enemies=active.map(a=>a.name).join(' · ');
-    const throws=active.map(a=>a.description).join(' · ');
-    document.getElementById('roundInfo').innerHTML=`<b>СОПЕРНИКИ: ${enemies}</b><br>${throws}<br>Лови 12 золотых секунд`;
+    const enemies=active.map(a=>`<div class="round-actor"><img src="${a.src}" alt=""><div><b>${a.name}</b> — ${a.description}</div></div>`).join('');
+    const goal=active.length===1?'<div class="round-actor round-hero"><img src="assets/girl.png" alt=""><div><b>Кристина</b> — ловит 12 золотых секунд</div></div>':'';
+    document.getElementById('roundInfo').innerHTML=`<div class="round-topline"><span>УРОВЕНЬ ${state.level} · КТО ПРОТИВ ТЕБЯ</span><span>ПОДГОТОВЬСЯ</span></div><div class="round-actors ${active.length===1?'has-target':''}">${enemies}${goal}</div><div class="round-goal">✦ Поймай 12 золотых секунд <span>прямое попадание завершает раунд</span></div>`;
   }
   function setRoster(){
     throwersEl.replaceChildren();state.actors=[];
-    activeRoster().forEach((info,index)=>{
+    const active=activeRoster();
+    active.forEach((info,index)=>{
       const lane=document.createElement('div');lane.className='actor-lane';
       const avatar=document.createElement('div');avatar.className='actor-avatar';
       const img=document.createElement('img');img.src=info.src;img.alt=info.name;img.draggable=false;avatar.append(img);
       const name=document.createElement('div');name.className='actor-name';name.textContent=info.name;
       lane.append(avatar,name);throwersEl.append(lane);
-      state.actors.push({info,lane,avatar,name,index,x:.5,y:.2});
+      const baseX=active.length===1 ? 0.18 : 0.14+0.72*(index/(active.length-1));
+      state.actors.push({info,lane,avatar,name,index,baseX,x:baseX,y:.2});
     });
   }
   function removeItem(item){item.node.remove();state.items=state.items.filter(i=>i!==item);}
   function clearLevelObjects(){state.items.forEach(i=>i.node.remove());state.items=[];state.hazards.forEach(h=>h.node.remove());state.hazards=[];}
+  function showResult(mark,kicker,title,body,button,action){
+    dialog.className='dialog result-dialog';
+    dialog.innerHTML=`<div class="result-medal">${mark}</div><div class="eyebrow">${kicker}</div><h1>${title}</h1><div class="result-stat">${body}</div><button class="start" id="resultAction">${button}</button>`;
+    overlay.classList.remove('hidden');document.getElementById('resultAction').addEventListener('click',action);
+  }
   function endGame(){
     state.running=false;cancelAnimationFrame(state.raf);
-    dialog.innerHTML=`<h1>Бутылка попала в Киту!</h1><p>Ты дошла до <b>уровня ${state.level}</b> и поймала <b>${state.caught} из 12 секунд</b>.</p><button class="start" id="again">Начать сначала</button>`;
-    overlay.classList.remove('hidden');document.getElementById('again').addEventListener('click',startGame);
+    showResult('✦','Раунд окончен','Кристину задело',`Уровень ${state.level} · поймано <b>${state.caught} из 12</b> золотых секунд. Попробуй ещё раз и уворачивайся в момент касания.`,`Начать сначала →`,startGame);
   }
   function finishLevel(){
     state.running=false;cancelAnimationFrame(state.raf);
     clearLevelObjects();
-    if(state.level===6){
-      dialog.innerHTML=`<h1>Кита справилась!</h1><p>Помогли Ките заработать <b>6 минут массажа</b>!</p><button class="start" id="again">Сыграть ещё раз</button>`;
-      overlay.classList.remove('hidden');document.getElementById('again').addEventListener('click',startGame);return;
+    if(state.level===120){
+      showResult('★','Победа','Кристина выиграла!',`Ты помогла ей заработать <b>120 минут массажа</b>.`,`Сыграть ещё раз →`,startGame);return;
     }
-    dialog.innerHTML=`<h1>Минута заработана!</h1><p>Ты поймала 12 секунд — Ките заработана ещё <b>1 минута массажа</b>.</p><p>Следующий уровень будет сложнее.</p><button class="start" id="continue">Уровень ${state.level+1}</button>`;
-    overlay.classList.remove('hidden');document.getElementById('continue').addEventListener('click',()=>{state.level++;state.caught=0;startLevel();});
+    showResult('◷','Минута в копилке','Ещё одна минута!',`Ты поймала 12 золотых секунд. <b>Массаж: ${state.level} из 120 минут.</b><br><br>${nextLevelStory(state.level+1)}`,`Уровень ${state.level+1} →`,()=>{state.level++;state.caught=0;startLevel();});
   }
   function throwItem(actorOverride,targetOverride){
     if(!state.actors.length)return;
@@ -228,22 +346,30 @@
     else if(kind==='sausage')node.setAttribute('aria-label','колбаска');
     else if(kind==='coinjar')node.innerHTML='<span>🫙</span><i class="coin-mark">🪙</i>';
     game.appendChild(node);
-    const endX=targetOverride??clamp(.08+Math.random()*.84,.08,.92);
-    const lateFinal=state.level===6&&state.caught>=9;
-    const duration=[2450,2160,1900,1680,1490,1320][state.level-1]*(lateFinal ? .66 : 1);
+    actor.avatar.classList.add('throwing');setTimeout(()=>actor.avatar.classList.remove('throwing'),780);
+    const field=game.getBoundingClientRect(),portrait=actor.avatar.getBoundingClientRect();
+    const launchX=(portrait.left+portrait.width/2-field.left)/field.width;
+    const launchY=(portrait.top+portrait.height/2-field.top)/field.height;
+    const endX=targetOverride??clamp(state.x+(Math.random()-.5)*.38,.08,.92);
+    const heroine=girl.getBoundingClientRect();
+    const landingY=(heroine.top+heroine.height*.88-field.top)/field.height;
+    const lateFinal=state.level>=5&&state.caught>=9;
+    const duration=levelTiming().flight*(lateFinal ? .64 : 1);
     const curve=(Math.random()-.5)*(state.level>=4 ? .3 : .2);
-    state.items.push({node,kind,actor,start:performance.now(),duration,fromX:actor.x,toX:endX,fromY:actor.y,toY:.77,bend:curve,hit:false});
+    state.items.push({node,kind,actor,start:performance.now(),duration,fromX:launchX,toX:endX,fromY:launchY,toY:landingY,bend:curve,hit:false});
   }
   function spawnSecond(){
     const node=document.createElement('div');node.className='item second';node.textContent='1с';game.appendChild(node);
     const source=.5+(Math.random()-.5)*.16;
-    const endX=clamp(.08+Math.random()*.84,.08,.92);
-    const flight=[2180,1950,1760,1570,1400,1240][state.level-1];
-    state.items.push({node,kind:'second',start:performance.now(),duration:flight,fromX:source,toX:endX,fromY:.16,toY:.77,bend:(Math.random()-.5)*.2,hit:false});
+    const endX=clamp(state.x+(Math.random()-.5)*.58,.08,.92);
+    const field=game.getBoundingClientRect(),heroine=girl.getBoundingClientRect();
+    const landingY=(heroine.top+heroine.height*.78-field.top)/field.height;
+    const flight=levelTiming().secondEvery*1.15;
+    state.items.push({node,kind:'second',start:performance.now(),duration:flight,fromX:source,toX:endX,fromY:.035,toY:landingY,bend:(Math.random()-.5)*.2,hit:false});
   }
   function startLevel(){
-    clearLevelObjects();setRoster();updateRoundInfo();state.running=true;state.x=.5;state.startedAt=performance.now();state.warmupUntil=state.startedAt+10000;state.last=state.startedAt;state.lastThrow=state.warmupUntil-650;state.lastSecond=state.warmupUntil-500;state.slowUntil=0;
-    girl.style.left='50%';refreshHud();overlay.classList.add('hidden');document.getElementById('countdown').classList.remove('hidden');document.getElementById('countdownLabel').textContent='БРОСКИ ЧЕРЕЗ';
+    clearLevelObjects();setRoster();updateRoundInfo();state.running=true;state.x=.5;state.startedAt=performance.now();state.warmupUntil=state.startedAt+10000;state.last=state.startedAt;state.lastThrow=state.warmupUntil-650;state.lastSecond=state.warmupUntil-500;state.slowUntil=0;game.classList.remove('playing');game.classList.add('prep');
+    girl.style.left='50%';refreshHud();overlay.classList.add('hidden');document.getElementById('roundInfo').classList.remove('hidden-info');document.getElementById('countdown').classList.remove('hidden');document.getElementById('countdownLabel').textContent='БРОСКИ ЧЕРЕЗ';
     showToast(`Уровень ${state.level}: приготовься!`);state.raf=requestAnimationFrame(frame);
   }
   function catchSecond(item){
@@ -252,68 +378,90 @@
     showToast('Секунда поймана!');
     refreshHud();
   }
-  function breakBottle(item,x){
+  function breakBottle(item,x,y){
     const node=document.createElement('div');
     if(item.kind==='waterBottle'){node.className='splat water glass';node.innerHTML='<i></i><span>💦</span>';}
     else if(item.kind==='poop'){node.className='splat mud';node.innerHTML='<span>💩</span>';}
     else if(item.kind==='banana'){node.className='splat banana-debris';node.textContent='🍌';}
     else if(item.kind==='sausage'){node.className='splat sausage-debris';node.textContent='🌭';}
     else {node.className='splat coin-debris glass';node.innerHTML='<i></i><span>🪙</span>';}
-    node.style.left=(x*100)+'%';node.style.top='76%';game.append(node);state.hazards.push({node,x,used:false});
+    node.style.left=(x*100)+'%';node.style.top=(clamp(y,.78,.96)*100)+'%';game.append(node);state.hazards.push({node,x,used:false});
   }
   function frame(now){
     if(!state.running)return;
     const rect=game.getBoundingClientRect(), dt=Math.min(.04,(now-state.last)/1000||0);state.last=now;
-    const lateFinal=state.level===6&&state.caught>=9;
+    const lateFinal=state.level>=5&&state.caught>=9;
     const moveSpeed=(now<state.slowUntil ? .38 : 1.0)*(lateFinal ? 1.05 : 1);
     if(now<state.warmupUntil){
       const remain=Math.max(1,Math.ceil((state.warmupUntil-now)/1000));document.getElementById('countdownValue').textContent=remain;
-      state.actors.forEach(actor=>{actor.x=.5;actor.avatar.style.left='50%';actor.name.style.left='50%';const laneRect=actor.lane.getBoundingClientRect();actor.y=(laneRect.top+actor.avatar.getBoundingClientRect().height/2-rect.top)/rect.height;});
+      if(remain===1)document.getElementById('roundInfo').classList.add('hidden-info');
+      state.actors.forEach(actor=>{actor.x=actor.baseX;actor.avatar.style.left=(actor.x*100)+'%';actor.name.style.left=(actor.x*100)+'%';const laneRect=actor.lane.getBoundingClientRect();actor.y=(laneRect.top+actor.avatar.getBoundingClientRect().height/2-rect.top)/rect.height;});
       state.raf=requestAnimationFrame(frame);return;
     }
-    document.getElementById('countdown').classList.add('hidden');
+    document.getElementById('countdown').classList.add('hidden');document.getElementById('roundInfo').classList.add('hidden-info');game.classList.remove('prep');game.classList.add('playing');
     const ramp=clamp((now-state.warmupUntil)/3000,0,1);
     if(state.keys.left)state.x-=moveSpeed*dt;
     if(state.keys.right)state.x+=moveSpeed*dt;
     state.x=clamp(state.x,.06,.94);girl.style.left=(state.x*100)+'%';
     state.actors.forEach((actor,index)=>{
       const phase=((now-state.warmupUntil)/(state.level>=4?580:850))+actor.info.phase;
-      actor.x=.5+.41*Math.sin(phase)*ramp;actor.avatar.style.left=(actor.x*100)+'%';actor.name.style.left=(actor.x*100)+'%';
+      actor.x=clamp(actor.baseX+.11*Math.sin(phase)*ramp,.06,.94);actor.avatar.style.left=(actor.x*100)+'%';actor.name.style.left=(actor.x*100)+'%';
       const laneRect=actor.lane.getBoundingClientRect();actor.y=(laneRect.top+actor.lane.querySelector('.actor-avatar').getBoundingClientRect().height/2-rect.top)/rect.height;
     });
-    const interval=[1450,1280,1120,950,820,720][state.level-1]*(1-.24*ramp)*(lateFinal ? .58 : 1);
-    const secondInterval=[1780,1580,1410,1230,1080,960][state.level-1]*(lateFinal ? .72 : 1);
+    const timing=levelTiming();
+    const interval=timing.throwEvery*(1-.24*ramp)*(lateFinal ? .58 : 1);
+    const secondInterval=timing.secondEvery*(lateFinal ? .72 : 1);
     if(now-state.lastThrow>=interval){throwItem();state.lastThrow=now;}
     if(now-state.lastSecond>=secondInterval){spawnSecond();state.lastSecond=now;}
     for(const item of [...state.items]){
       const p=clamp((now-item.start)/item.duration,0,1);
       const x=item.fromX+(item.toX-item.fromX)*p+Math.sin(Math.PI*p)*item.bend;
       const y=item.fromY+(item.toY-item.fromY)*p-.12*Math.sin(Math.PI*p);
-      const half=item.kind==='waterBottle'?12:item.kind==='second'?21:item.kind==='sausage'?29:24;
-      item.node.style.left=`calc(${x*100}% - ${half}px)`;
-      item.node.style.top=`calc(${y*100}% - ${half}px)`;
-      if(!item.hit&&p>.72){
-        const close=Math.abs(state.x*rect.width-x*rect.width)<Math.max(34,rect.width*.075);
-        if(close&&item.kind==='second'){item.hit=true;catchSecond(item);if(!state.running)return;continue;}
-        if(close&&item.kind!=='second'){item.hit=true;girl.classList.add('hit');showToast(item.kind==='poop'?'Какашка попала!':'Предмет попал!');endGame();return;}
+      const halfX=item.kind==='waterBottle'?12:item.kind==='second'?21:item.kind==='sausage'?29:item.kind==='coinjar'?18:24;
+      const halfY=item.kind==='waterBottle'?21:item.kind==='second'?21:item.kind==='sausage'?13:item.kind==='coinjar'?21:24;
+      item.node.style.left=`calc(${x*100}% - ${halfX}px)`;
+      item.node.style.top=`calc(${y*100}% - ${halfY}px)`;
+      if(!item.hit){
+        const projectile=item.node.getBoundingClientRect(),hero=girl.getBoundingClientRect();
+        const legs={left:hero.left+hero.width*.34,right:hero.right-hero.width*.34,top:hero.top+hero.height*.59,bottom:hero.bottom-hero.height*.015};
+        const body={left:hero.left+hero.width*.2,right:hero.right-hero.width*.2,top:hero.top+hero.height*.08,bottom:hero.bottom-hero.height*.02};
+        const overlaps=box=>projectile.right>box.left&&projectile.left<box.right&&projectile.bottom>box.top&&projectile.top<box.bottom;
+        if(item.kind==='second'&&overlaps(body)){item.hit=true;catchSecond(item);if(!state.running)return;continue;}
+        if(item.kind!=='second'&&overlaps(legs)){item.hit=true;girl.classList.add('hit');showToast(item.kind==='poop'?'Какашка попала!':'Попадание!');endGame();return;}
       }
-      if(p>=1){if(item.kind!=='second'&&!item.hit)breakBottle(item,x);removeItem(item);}
+      if(p>=1){if(item.kind!=='second'&&!item.hit)breakBottle(item,x,y);removeItem(item);}
     }
     for(const hazard of state.hazards){if(!hazard.used&&Math.abs(state.x-hazard.x)<.055){hazard.used=true;state.slowUntil=now+900;showToast('Осторожно, скользко!');}}
     state.raf=requestAnimationFrame(frame);
   }
-  function startGame(){state.level=1;state.caught=0;startLevel();}
+  function startGame(){
+    const input=document.getElementById('playerNames'),names=(input?.value||state.playerNames||'').trim();
+    if(!names){if(input){input.focus();input.reportValidity();}return;}
+    state.playerNames=names;document.getElementById('playerTag').textContent=`ИГРАЮТ: ${names}`;
+    try{localStorage.setItem('helpKristinaPlayerNames',names);}catch{}
+    state.level=1;state.caught=0;startLevel();
+  }
+  const namesInput=document.getElementById('playerNames');
+  try{namesInput.value=localStorage.getItem('helpKristinaPlayerNames')||'';}catch{}
+  if(namesInput.value)document.getElementById('playerTag').textContent=`ИГРАЮТ: ${namesInput.value}`;
+  namesInput.addEventListener('input',()=>{try{localStorage.setItem('helpKristinaPlayerNames',namesInput.value.trim());}catch{}});
+  const introSteps=[...document.querySelectorAll('.intro-step')],stepNext=document.getElementById('stepNext'),stepBack=document.getElementById('stepBack'),stepStart=document.getElementById('start'),stepNumber=document.getElementById('stepNumber'),stepDots=[...document.querySelectorAll('.step-dots i')];
+  let introIndex=0;
+  function showIntroStep(index){
+    introIndex=clamp(index,0,introSteps.length-1);
+    introSteps.forEach((step,i)=>step.classList.toggle('active',i===introIndex));
+    stepNumber.textContent=`0${introIndex+1} / 0${introSteps.length}`;
+    stepDots.forEach((dot,i)=>dot.classList.toggle('active',i===introIndex));
+    stepBack.classList.toggle('hidden',introIndex===0);
+    stepNext.classList.toggle('hidden',introIndex===introSteps.length-1);
+    stepStart.classList.toggle('hidden',introIndex!==introSteps.length-1);
+    stepNext.textContent=introIndex===0?'Прочитал(а), дальше →':'Дальше →';
+  }
+  stepNext.addEventListener('click',()=>showIntroStep(introIndex+1));
+  stepBack.addEventListener('click',()=>showIntroStep(introIndex-1));
   document.getElementById('start').addEventListener('click',startGame);
   function setDirection(dir,on,button){state.keys[dir]=on;if(button)button.classList.toggle('held',on);}
-  for(const [id,dir] of [['left','left'],['right','right']]){
-    const b=document.getElementById(id);
-    b.addEventListener('pointerdown',e=>{e.preventDefault();b.setPointerCapture(e.pointerId);setDirection(dir,true,b);});
-    const up=e=>{e.preventDefault();setDirection(dir,false,b);};
-    b.addEventListener('pointerup',up);b.addEventListener('pointercancel',up);b.addEventListener('lostpointercapture',()=>setDirection(dir,false,b));
-  }
-  window.addEventListener('keydown',e=>{if(['ArrowLeft','a','A'].includes(e.key)){e.preventDefault();setDirection('left',true,document.getElementById('left'));}if(['ArrowRight','d','D'].includes(e.key)){e.preventDefault();setDirection('right',true,document.getElementById('right'));}});
-  window.addEventListener('keyup',e=>{if(['ArrowLeft','a','A'].includes(e.key))setDirection('left',false,document.getElementById('left'));if(['ArrowRight','d','D'].includes(e.key))setDirection('right',false,document.getElementById('right'));});
-  game.addEventListener('pointerdown',e=>{if(e.target.closest('button')||!state.running)return;state.drag=true;});
+  game.addEventListener('pointerdown',e=>{if(!state.running)return;state.drag=true;game.setPointerCapture(e.pointerId);const r=game.getBoundingClientRect();state.x=clamp((e.clientX-r.left)/r.width,.06,.94);girl.style.left=(state.x*100)+'%';});
   game.addEventListener('pointermove',e=>{if(!state.drag||!state.running)return;const r=game.getBoundingClientRect();state.x=clamp((e.clientX-r.left)/r.width,.06,.94);girl.style.left=(state.x*100)+'%';});
   window.addEventListener('pointerup',()=>state.drag=false);
 })();
