@@ -51,6 +51,10 @@
     .actor-avatar img {width:100%;height:100%;object-fit:cover;object-position:35% 24%;border-radius:50%;}
     .actor-name {position:absolute;left:50%;top:calc(clamp(42px,11vw,51px) - 1px);transform:translateX(-50%);padding:2px 7px;border-radius:20px;background:#fff9e9f2;color:#315342;font-size:clamp(9px,2.3vw,11px);font-weight:900;line-height:1.2;white-space:nowrap;box-shadow:0 2px 5px #284b3820;}
     .hero-label {position:absolute;z-index:8;left:50%;bottom:clamp(68px,10vh,92px);transform:translateX(-50%);background:#fff9e9ed;border-radius:99px;padding:4px 12px;font-size:12px;font-weight:900;color:#315342;}
+    .round-info {position:absolute;z-index:9;top:68px;left:8px;right:8px;padding:6px 9px;border-radius:13px;background:#fff9e9ed;text-align:center;color:#345741;font-size:clamp(10px,2.7vw,12px);font-weight:800;line-height:1.35;box-shadow:0 4px 12px #284b3820;}
+    .countdown {position:absolute;z-index:10;left:50%;top:48%;transform:translate(-50%,-50%);min-width:150px;padding:10px 15px;border-radius:20px;background:#fff9e9e8;text-align:center;color:#315342;box-shadow:0 7px 22px #284b3840;pointer-events:none;}
+    .countdown strong {display:block;font-size:44px;line-height:1;color:#a75c3e;}
+    .countdown span {display:block;margin-top:4px;font-size:12px;font-weight:900;letter-spacing:.05em;}
     .thrower { position:absolute; z-index:5; left:50%;top:calc(clamp(86px,13vh,128px) + clamp(66px,17vw,94px) + 26px);font-size:22px;transform:translateX(-50%);filter:drop-shadow(0 4px 2px #344d3340);transition:left .24s ease-out; }
     .girl { position:absolute; z-index:6; bottom:clamp(74px,11vh,105px); left:50%; height:clamp(220px,38vh,345px); width:auto; max-width:49%; object-fit:contain; object-position:bottom; transform:translateX(-50%); transition:filter .14s; filter:drop-shadow(0 8px 4px #355e3a42); user-select:none; -webkit-user-drag:none; }
     .girl.catch { filter:drop-shadow(0 0 14px #ffe276); }
@@ -65,12 +69,28 @@
     .bottle:after {content:"";position:absolute;left:3px;right:3px;top:8px;height:3px;background:#ffffffa8;border-radius:3px;}
     .bottle.water {background:linear-gradient(135deg,#c7f7ff,#48b7d1 72%,#25829d);}
     .bottle.mud {background:linear-gradient(135deg,#b9875e,#795033 72%,#4d3024);border-color:#ead6b9;}
+    .bottle .mark {font-size:13px;line-height:1;}
+    .item.poop,.item.banana,.item.sausage,.item.coinjar {width:48px;height:48px;font-size:39px;filter:drop-shadow(0 4px 3px #3b423d66);animation:spinThrow .46s ease-in-out infinite alternate;}
+    .item.poop{font-size:43px;}
+    .item.coinjar{font-size:36px;}
+    .item.sausage{width:58px;height:25px;border:2px solid #f2c2a3;border-radius:50%;background:linear-gradient(#c97849,#9b442c 55%,#703523);box-shadow:inset 0 4px 3px #ffd2aa66;}
+    .item.sausage:before,.item.sausage:after{content:"";position:absolute;top:4px;width:7px;height:13px;border-radius:50%;background:#8a3a27;}
+    .item.sausage:before{left:3px}.item.sausage:after{right:3px}
+    .item.coinjar{width:36px;height:42px;border:2px solid #d8f6f5;border-radius:8px 8px 12px 12px;background:linear-gradient(90deg,#a3dfd866,#e7ffffb8 45%,#8fc9c866);box-shadow:0 2px 8px #354a3c66;}
+    .item.coinjar:before{content:"";position:absolute;top:-6px;width:24px;height:7px;border-radius:3px;background:#b56c40;border:1px solid #f4d2a8;}
+    .item.coinjar .coin-mark{position:absolute;right:-9px;top:-11px;font-size:20px;}
+    .coin-mark{position:absolute;right:-3px;top:-4px;font-size:20px;}
+    @keyframes spinThrow {to{transform:rotate(24deg) translateY(-3px)}}
     .splat {position:absolute;z-index:5;width:58px;height:17px;border-radius:55% 48% 42% 60%;transform:translateX(-50%);opacity:.95;pointer-events:none;}
     .splat.water {background:#48b9d3;box-shadow:0 0 0 3px #d9f7ff55;}
     .splat.mud {background:#795139;box-shadow:0 0 0 3px #d4b49766;}
-    .splat:before,.splat:after {content:"";position:absolute;bottom:4px;width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:15px solid #eaf0e8;filter:drop-shadow(0 1px 1px #33443c);}
+    .splat.glass:before,.splat.glass:after {content:"";position:absolute;bottom:4px;width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:15px solid #eaf0e8;filter:drop-shadow(0 1px 1px #33443c);}
     .splat:before {left:9px;transform:rotate(-24deg)} .splat:after{right:7px;transform:rotate(28deg)}
-    .splat i {position:absolute;left:27px;bottom:5px;width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:12px solid #f2f1e8;transform:rotate(10deg);filter:drop-shadow(0 1px 1px #33443c);}
+    .splat.glass i {position:absolute;left:27px;bottom:5px;width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:12px solid #f2f1e8;transform:rotate(10deg);filter:drop-shadow(0 1px 1px #33443c);}
+    .splat span{position:absolute;left:50%;top:-15px;transform:translateX(-50%);font-size:20px;line-height:1;}
+    .splat.banana-debris{width:54px;height:24px;background:transparent;box-shadow:none;font-size:27px;}
+    .splat.sausage-debris{width:54px;height:24px;background:transparent;box-shadow:none;font-size:24px;}
+    .splat.coin-debris{width:48px;height:22px;background:#a2d9d5;box-shadow:0 0 0 2px #f2ffff77;font-size:19px;}
     .toast {position:absolute;z-index:13;left:50%;top:19%;transform:translate(-50%,-8px);padding:9px 14px;border-radius:99px;background:#fff9e9;color:#28513d;font-size:14px;font-weight:900;opacity:0;transition:.2s;pointer-events:none;white-space:nowrap;}
     .toast.show {opacity:1;transform:translate(-50%,0)}
     .controls {position:absolute;z-index:11;bottom:max(12px,env(safe-area-inset-bottom));left:0;right:0;display:flex;justify-content:space-between;align-items:end;padding:0 16px;pointer-events:none;}
@@ -89,10 +109,12 @@
     @media (max-width:600px) {
       .hud{left:8px;right:8px;min-height:58px;padding:8px 9px;border-radius:15px;}
       .sub{font-size:9px;}.pill{padding:8px 9px;font-size:12px;}
-      .thrower-lanes{top:clamp(81px,10.5vh,99px);}
+      .thrower-lanes{top:140px;}
       .actor-lane{height:clamp(51px,7vh,58px);}
       .actor-avatar{width:45px;height:45px;}
       .actor-name{top:42px;font-size:10px;}
+      .round-info{top:66px;min-height:58px;padding:6px 8px;}
+      .countdown{top:48%;min-width:142px;}
       .girl{height:clamp(220px,37vh,300px);max-width:55%;bottom:clamp(78px,12vh,102px);}
       .hero-label{bottom:clamp(70px,10.5vh,90px);}
       .controls{padding:0 10px;bottom:max(10px,env(safe-area-inset-bottom));}
@@ -106,7 +128,8 @@
       .hud{min-height:48px;padding:5px 10px;}.sub{display:none;}
       .girl{height:54vh;bottom:64px;}
       .controls{bottom:8px;}.move button{height:48px;width:62px;}
-      .thrower-lanes{top:61px;}.actor-lane{height:48px;}.actor-avatar{width:39px;height:39px;}.actor-name{top:36px;}
+      .thrower-lanes{top:126px;}.actor-lane{height:44px;}.actor-avatar{width:38px;height:38px;}.actor-name{top:35px;}
+      .round-info{top:56px;min-height:60px;}.countdown{top:50%;}
     }
   </style>
 </head>
@@ -121,6 +144,8 @@
     <div><div class="brand">МИНУТЫ МАССАЖА</div><div class="sub">ИГРА: ЗЛОЙ САШКА</div></div>
     <div class="stats"><div class="pill" id="level">МИНУТА 1</div><div class="pill time" id="score">0 / 12</div></div>
   </header>
+  <div class="round-info" id="roundInfo">Загружаем раунд…</div>
+  <div class="countdown hidden" id="countdown"><strong id="countdownValue">10</strong><span id="countdownLabel">БРОСКИ ЧЕРЕЗ</span></div>
   <div class="thrower-lanes" id="throwers" aria-label="Те, кто бросает"></div>
   <img class="girl" id="girl" src="assets/girl.png" alt="Фото девушки — аватар игрока" draggable="false">
   <div class="hero-label">КИТА</div>
@@ -136,6 +161,7 @@
       <p>Бутылки разбиваются при падении, а лужи и осколки остаются на поляне до конца уровня.</p>
       <p><b>На телефоне:</b> удерживайте стрелки снизу или ведите пальцем по поляне.</p>
       <button class="start" id="start">Начать игру</button>
+      <p class="small">Автор игры: Злой Сашка</p>
       <p class="small">Для начала коснись кнопки «Начать игру».</p>
     </div>
   </section>
@@ -146,16 +172,22 @@
   const overlay=document.getElementById('overlay'), dialog=document.getElementById('dialog');
   const levelEl=document.getElementById('level'), scoreEl=document.getElementById('score'), toastEl=document.getElementById('toast');
   const roster=[
-    {name:'Злой Сашка',src:'assets/boy.png',first:1,phase:0},
-    {name:'Крестено',src:'assets/kresteno.png',first:4,phase:1.9},
-    {name:'Макпал',src:'assets/makpal.png',first:5,phase:3.1},
-    {name:'Настя',src:'assets/nastya.png',first:6,phase:4.4}
+    {name:'Гурбан',src:'assets/boy.png',first:1,phase:0,throws:['waterBottle','poop'],description:'Гурбан — бутылки с водой и 💩 какашки'},
+    {name:'Крестено',src:'assets/kresteno.png',first:4,phase:1.9,throws:['banana','poop'],description:'Крестено — банановые кожурки и 💩 какашки'},
+    {name:'Макпал',src:'assets/makpal.png',first:5,phase:3.1,throws:['sausage'],description:'Макпал — колбаски'},
+    {name:'Настя',src:'assets/nastya.png',first:6,phase:4.4,throws:['coinjar'],description:'Настя — банки с монетами'}
   ];
-  const state={running:false,x:.5,keys:{left:false,right:false},actors:[],items:[],hazards:[],caught:0,level:1,lastThrow:0,last:0,startedAt:0,raf:0,toastTimer:0,drag:false,slowUntil:0};
+  const state={running:false,x:.5,keys:{left:false,right:false},actors:[],items:[],hazards:[],caught:0,level:1,lastThrow:0,lastSecond:0,last:0,startedAt:0,warmupUntil:0,raf:0,toastTimer:0,drag:false,slowUntil:0};
   const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
   function showToast(text){toastEl.textContent=text;toastEl.classList.add('show');clearTimeout(state.toastTimer);state.toastTimer=setTimeout(()=>toastEl.classList.remove('show'),1100);}
   function refreshHud(){levelEl.textContent=`МИНУТА ${state.level}`;scoreEl.textContent=`${state.caught} / 12`;}
   function activeRoster(){return roster.filter(actor=>state.level>=actor.first);}
+  function updateRoundInfo(){
+    const active=activeRoster();
+    const enemies=active.map(a=>a.name).join(' · ');
+    const throws=active.map(a=>a.description).join(' · ');
+    document.getElementById('roundInfo').innerHTML=`<b>СОПЕРНИКИ: ${enemies}</b><br>${throws}<br>Лови 12 золотых секунд`;
+  }
   function setRoster(){
     throwersEl.replaceChildren();state.actors=[];
     activeRoster().forEach((info,index)=>{
@@ -184,27 +216,35 @@
     dialog.innerHTML=`<h1>Минута заработана!</h1><p>Ты поймала 12 секунд — Ките заработана ещё <b>1 минута массажа</b>.</p><p>Следующий уровень будет сложнее.</p><button class="start" id="continue">Уровень ${state.level+1}</button>`;
     overlay.classList.remove('hidden');document.getElementById('continue').addEventListener('click',()=>{state.level++;state.caught=0;startLevel();});
   }
-  function throwItem(forceType,actorOverride,targetOverride){
+  function throwItem(actorOverride,targetOverride){
     if(!state.actors.length)return;
     const actor=actorOverride||state.actors[Math.floor(Math.random()*state.actors.length)];
-    const lateFinal=state.level===6&&state.caught>=9;
-    const bottleChance=lateFinal ? .9 : state.level===1 ? .23 : state.level===2 ? .34 : state.level===3 ? .43 : state.level===4 ? .54 : state.level===5 ? .63 : .74;
-    const kind=forceType||(Math.random()<bottleChance?'bottle':'second');
-    const contents=Math.random()<.52?'water':'mud';
-    const node=document.createElement('div');node.className=kind==='second'?'item second':`item bottle ${contents}`;
-    if(kind==='second')node.textContent='1с';else node.textContent=contents==='water'?'В':'Г';
+    const choices=actor.info.throws;
+    const kind=choices[Math.floor(Math.random()*choices.length)];
+    const node=document.createElement('div');node.className=`item ${kind}`;
+    if(kind==='waterBottle'){node.classList.add('bottle','water');node.innerHTML='<span class="mark">💧</span>';}
+    else if(kind==='poop')node.textContent='💩';
+    else if(kind==='banana')node.textContent='🍌';
+    else if(kind==='sausage')node.setAttribute('aria-label','колбаска');
+    else if(kind==='coinjar')node.innerHTML='<span>🫙</span><i class="coin-mark">🪙</i>';
     game.appendChild(node);
     const endX=targetOverride??clamp(.08+Math.random()*.84,.08,.92);
-    const base=[2250,2020,1810,1600,1430,1260][state.level-1];
-    const duration=lateFinal?850:base;
-    const curve=(Math.random()-.5)*(state.level>=4 ? .28 : .18);
-    state.items.push({node,kind,contents,actor,start:performance.now(),duration,fromX:actor.x,toX:endX,fromY:actor.y,toY:.77,bend:curve,hit:false});
+    const lateFinal=state.level===6&&state.caught>=9;
+    const duration=[2450,2160,1900,1680,1490,1320][state.level-1]*(lateFinal ? .66 : 1);
+    const curve=(Math.random()-.5)*(state.level>=4 ? .3 : .2);
+    state.items.push({node,kind,actor,start:performance.now(),duration,fromX:actor.x,toX:endX,fromY:actor.y,toY:.77,bend:curve,hit:false});
+  }
+  function spawnSecond(){
+    const node=document.createElement('div');node.className='item second';node.textContent='1с';game.appendChild(node);
+    const source=.5+(Math.random()-.5)*.16;
+    const endX=clamp(.08+Math.random()*.84,.08,.92);
+    const flight=[2180,1950,1760,1570,1400,1240][state.level-1];
+    state.items.push({node,kind:'second',start:performance.now(),duration:flight,fromX:source,toX:endX,fromY:.16,toY:.77,bend:(Math.random()-.5)*.2,hit:false});
   }
   function startLevel(){
-    clearLevelObjects();setRoster();state.running=true;state.x=.5;state.startedAt=performance.now();state.last=state.startedAt;state.lastThrow=state.startedAt;state.slowUntil=0;
-    girl.style.left='50%';refreshHud();overlay.classList.add('hidden');
-    const sasha=state.actors[0];throwItem('second',sasha,.5);
-    showToast(`Уровень ${state.level}: лови секунды!`);state.raf=requestAnimationFrame(frame);
+    clearLevelObjects();setRoster();updateRoundInfo();state.running=true;state.x=.5;state.startedAt=performance.now();state.warmupUntil=state.startedAt+10000;state.last=state.startedAt;state.lastThrow=state.warmupUntil-650;state.lastSecond=state.warmupUntil-500;state.slowUntil=0;
+    girl.style.left='50%';refreshHud();overlay.classList.add('hidden');document.getElementById('countdown').classList.remove('hidden');document.getElementById('countdownLabel').textContent='БРОСКИ ЧЕРЕЗ';
+    showToast(`Уровень ${state.level}: приготовься!`);state.raf=requestAnimationFrame(frame);
   }
   function catchSecond(item){
     removeItem(item);state.caught++;girl.classList.add('catch');setTimeout(()=>girl.classList.remove('catch'),220);
@@ -213,36 +253,51 @@
     refreshHud();
   }
   function breakBottle(item,x){
-    const node=document.createElement('div');node.className=`splat ${item.contents}`;node.style.left=(x*100)+'%';node.style.top='76%';
-    const shard=document.createElement('i');node.append(shard);game.append(node);state.hazards.push({node,x,used:false});
+    const node=document.createElement('div');
+    if(item.kind==='waterBottle'){node.className='splat water glass';node.innerHTML='<i></i><span>💦</span>';}
+    else if(item.kind==='poop'){node.className='splat mud';node.innerHTML='<span>💩</span>';}
+    else if(item.kind==='banana'){node.className='splat banana-debris';node.textContent='🍌';}
+    else if(item.kind==='sausage'){node.className='splat sausage-debris';node.textContent='🌭';}
+    else {node.className='splat coin-debris glass';node.innerHTML='<i></i><span>🪙</span>';}
+    node.style.left=(x*100)+'%';node.style.top='76%';game.append(node);state.hazards.push({node,x,used:false});
   }
   function frame(now){
     if(!state.running)return;
     const rect=game.getBoundingClientRect(), dt=Math.min(.04,(now-state.last)/1000||0);state.last=now;
     const lateFinal=state.level===6&&state.caught>=9;
     const moveSpeed=(now<state.slowUntil ? .38 : 1.0)*(lateFinal ? 1.05 : 1);
+    if(now<state.warmupUntil){
+      const remain=Math.max(1,Math.ceil((state.warmupUntil-now)/1000));document.getElementById('countdownValue').textContent=remain;
+      state.actors.forEach(actor=>{actor.x=.5;actor.avatar.style.left='50%';actor.name.style.left='50%';const laneRect=actor.lane.getBoundingClientRect();actor.y=(laneRect.top+actor.avatar.getBoundingClientRect().height/2-rect.top)/rect.height;});
+      state.raf=requestAnimationFrame(frame);return;
+    }
+    document.getElementById('countdown').classList.add('hidden');
+    const ramp=clamp((now-state.warmupUntil)/3000,0,1);
     if(state.keys.left)state.x-=moveSpeed*dt;
     if(state.keys.right)state.x+=moveSpeed*dt;
     state.x=clamp(state.x,.06,.94);girl.style.left=(state.x*100)+'%';
     state.actors.forEach((actor,index)=>{
-      const phase=(now-state.startedAt)/(state.level>=4?580:850)+actor.info.phase;
-      actor.x=.5+.41*Math.sin(phase);actor.avatar.style.left=(actor.x*100)+'%';actor.name.style.left=(actor.x*100)+'%';
+      const phase=((now-state.warmupUntil)/(state.level>=4?580:850))+actor.info.phase;
+      actor.x=.5+.41*Math.sin(phase)*ramp;actor.avatar.style.left=(actor.x*100)+'%';actor.name.style.left=(actor.x*100)+'%';
       const laneRect=actor.lane.getBoundingClientRect();actor.y=(laneRect.top+actor.lane.querySelector('.actor-avatar').getBoundingClientRect().height/2-rect.top)/rect.height;
     });
-    const interval=[1420,1260,1090,920,800,710][state.level-1]*(lateFinal ? .74 : 1);
+    const interval=[1450,1280,1120,950,820,720][state.level-1]*(1-.24*ramp)*(lateFinal ? .58 : 1);
+    const secondInterval=[1780,1580,1410,1230,1080,960][state.level-1]*(lateFinal ? .72 : 1);
     if(now-state.lastThrow>=interval){throwItem();state.lastThrow=now;}
+    if(now-state.lastSecond>=secondInterval){spawnSecond();state.lastSecond=now;}
     for(const item of [...state.items]){
       const p=clamp((now-item.start)/item.duration,0,1);
       const x=item.fromX+(item.toX-item.fromX)*p+Math.sin(Math.PI*p)*item.bend;
       const y=item.fromY+(item.toY-item.fromY)*p-.12*Math.sin(Math.PI*p);
-      item.node.style.left=`calc(${x*100}% - ${item.kind==='bottle'?12:21}px)`;
-      item.node.style.top=`calc(${y*100}% - ${item.kind==='bottle'?21:21}px)`;
+      const half=item.kind==='waterBottle'?12:item.kind==='second'?21:item.kind==='sausage'?29:24;
+      item.node.style.left=`calc(${x*100}% - ${half}px)`;
+      item.node.style.top=`calc(${y*100}% - ${half}px)`;
       if(!item.hit&&p>.72){
         const close=Math.abs(state.x*rect.width-x*rect.width)<Math.max(34,rect.width*.075);
         if(close&&item.kind==='second'){item.hit=true;catchSecond(item);if(!state.running)return;continue;}
-        if(close&&item.kind==='bottle'){item.hit=true;girl.classList.add('hit');showToast('Бутылка попала!');endGame();return;}
+        if(close&&item.kind!=='second'){item.hit=true;girl.classList.add('hit');showToast(item.kind==='poop'?'Какашка попала!':'Предмет попал!');endGame();return;}
       }
-      if(p>=1){if(item.kind==='bottle'&&!item.hit)breakBottle(item,x);removeItem(item);}
+      if(p>=1){if(item.kind!=='second'&&!item.hit)breakBottle(item,x);removeItem(item);}
     }
     for(const hazard of state.hazards){if(!hazard.used&&Math.abs(state.x-hazard.x)<.055){hazard.used=true;state.slowUntil=now+900;showToast('Осторожно, скользко!');}}
     state.raf=requestAnimationFrame(frame);
