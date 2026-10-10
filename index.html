@@ -96,53 +96,24 @@
       font-variant-numeric: tabular-nums;
     }
 
-    .left {
-      margin: 22px 0 0;
-      color: var(--muted);
-      font-size: 15px;
-      font-variant-numeric: tabular-nums;
-    }
-
     .work {
-      width: min(520px, 100%);
-      text-align: left;
+      width: min(640px, 100%);
+      min-height: 3.2em;
     }
 
-    .work h2 {
-      margin: 0 0 2px;
-      font-size: 15px;
-      font-weight: 600;
-    }
-
-    .count {
-      margin: 0 0 10px;
+    .edit {
+      margin: 0;
       color: var(--muted);
       font-size: 14px;
+      overflow-wrap: anywhere;
     }
 
-    .log {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      height: 8.5em;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      list-style: none;
-      font: 13px/1.7 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    .path {
+      color: var(--text);
+      font: 14px/1.6 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     }
 
-    .log li {
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-
-    .done {
-      color: #999;
-    }
-
-    .now::after {
+    .path::after {
       content: "";
       display: inline-block;
       width: 0.5em;
@@ -160,7 +131,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .now::after {
+      .path::after {
         animation: none;
       }
     }
@@ -173,8 +144,7 @@
       <h1>Сайт не работает — идёт обновление</h1>
       <p class="text">
         Мы полностью переделываем сайт: меняем страницы и переписываем код.
-        Если обновление не удастся завершить до 23 октября 2026 года,
-        эта страница будет удалена полностью.
+        Если обновление не удастся завершить, эта страница будет удалена полностью.
       </p>
     </header>
 
@@ -187,13 +157,10 @@
         </svg>
         <div class="value" id="value">0,00%</div>
       </div>
-      <p class="left" id="left"></p>
     </section>
 
     <section class="work">
-      <h2>Идёт редактирование страниц и кода сайта</h2>
-      <p class="count" id="count"></p>
-      <ul class="log" id="log"></ul>
+      <p class="edit">Идёт редактирование кода: <span class="path" id="path"></span></p>
     </section>
   </main>
 
@@ -201,7 +168,6 @@
     (function () {
       var START = new Date('2026-10-10T00:00:00+05:00').getTime();
       var END = new Date('2026-10-23T00:00:00+05:00').getTime();
-      var DEADLINE = '23.10.2026';
 
       var PAGES = [
     'faq/delivery.html', 'coins/balance.html', 'news/openings.html', 'account/favorites.html',
@@ -238,9 +204,7 @@
 
       var arc = document.getElementById('arc');
       var value = document.getElementById('value');
-      var left = document.getElementById('left');
-      var count = document.getElementById('count');
-      var log = document.getElementById('log');
+      var path = document.getElementById('path');
 
       var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       var circumference = 2 * Math.PI * Number(arc.getAttribute('r'));
@@ -258,26 +222,8 @@
         value.textContent = p >= 100 ? '100%' : p.toFixed(2).replace('.', ',') + '%';
       }
 
-      function pad(n) {
-        return n < 10 ? '0' + n : String(n);
-      }
-
-      function drawLeft() {
-        var ms = END - Date.now();
-        if (ms <= 0) {
-          left.textContent = 'Обновление завершается';
-          return;
-        }
-        var s = Math.floor(ms / 1000);
-        var d = Math.floor(s / 86400);
-        var h = Math.floor(s % 86400 / 3600);
-        var m = Math.floor(s % 3600 / 60);
-        left.textContent = 'До ' + DEADLINE + ' осталось ' + d + ' д ' + pad(h) + ' ч ' + pad(m) + ' мин ' + pad(s % 60) + ' с';
-      }
-
       function tick() {
         if (!intro) draw(progress());
-        drawLeft();
       }
 
       function runIntro() {
@@ -294,16 +240,16 @@
         requestAnimationFrame(frame);
       }
 
-      function type(el, text, done) {
+      function type(text, done) {
         if (calm) {
-          el.textContent = '› ' + text;
+          path.textContent = text;
           done();
           return;
         }
         var i = 0;
         var timer = setInterval(function () {
           i++;
-          el.textContent = '› ' + text.slice(0, i);
+          path.textContent = text.slice(0, i);
           if (i >= text.length) {
             clearInterval(timer);
             done();
@@ -314,20 +260,11 @@
       var index = 0;
 
       function step() {
-        var path = 'pages/' + PAGES[index];
-        var line = document.createElement('li');
-        line.className = 'now';
-        log.appendChild(line);
-        while (log.children.length > 5) log.removeChild(log.firstChild);
-        count.textContent = 'Редактируется страница ' + (index + 1) + ' из ' + PAGES.length;
-
-        type(line, path, function () {
+        type('pages/' + PAGES[index], function () {
           setTimeout(function () {
-            line.className = 'done';
-            line.textContent = '✓ ' + path;
             index = (index + 1) % PAGES.length;
-            setTimeout(step, 250 + Math.random() * 400);
-          }, 600 + Math.random() * 900);
+            step();
+          }, 1000 + Math.random() * 900);
         });
       }
 
@@ -337,7 +274,6 @@
       } else {
         draw(progress());
       }
-      drawLeft();
       setInterval(tick, 1000);
       step();
     })();
