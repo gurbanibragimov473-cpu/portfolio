@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#090a0a">
+<title>Панель управления</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/admin.css?v=1">
+</head>
+<body>
+<a class="back" href="index.html">← На сайт</a>
+
+<main class="shell">
+  <section id="login" class="card narrow">
+    <span class="tag">管理后台</span>
+    <h1>Вход в панель</h1>
+    <p class="lead">Здесь можно добавлять свои проекты на сайт. Войти может только тот, у кого есть токен доступа.</p>
+    <form id="loginForm" autocomplete="off">
+      <label>Логин на GitHub<input id="owner" required placeholder="например, ivanov"></label>
+      <label>Название репозитория<input id="repo" required placeholder="например, portfolio"></label>
+      <label>Токен доступа<input id="token" type="password" required placeholder="github_pat_..." autocomplete="new-password"></label>
+      <label class="check"><input id="remember" type="checkbox"> Запомнить на этом устройстве</label>
+      <button class="btn main" type="submit">Войти</button>
+      <p id="loginNote" class="note"></p>
+    </form>
+    <details>
+      <summary>Как получить токен</summary>
+      <ol>
+        <li>Откройте GitHub и зайдите в Settings → Developer settings → Personal access tokens → Fine-grained tokens.</li>
+        <li>Нажмите Generate new token и придумайте название.</li>
+        <li>В разделе Repository access выберите Only select repositories и укажите репозиторий сайта.</li>
+        <li>В Permissions → Repository permissions найдите Contents и поставьте Read and write.</li>
+        <li>Нажмите Generate token и скопируйте значение, оно показывается один раз.</li>
+      </ol>
+      <p>Токен нигде не хранится на сайте. Он остаётся только в вашем браузере и работает как пароль.</p>
+    </details>
+  </section>
+
+  <section id="panel" hidden>
+    <header class="bar">
+      <div><span class="tag">管理后台</span><h1>Мои проекты</h1></div>
+      <div class="who"><span id="who"></span><button id="logout" class="btn" type="button">Выйти</button></div>
+    </header>
+    <div class="cols">
+      <div class="card">
+        <h2>Опубликованные</h2>
+        <div id="list" class="list"></div>
+        <p id="listNote" class="note"></p>
+      </div>
+      <form id="form" class="card" autocomplete="off">
+        <h2 id="formTitle">Новый проект</h2>
+        <label>Название<input id="fTitle" required maxlength="80"></label>
+        <div class="two">
+          <label>Тип по-русски<input id="fKindRu" maxlength="80" placeholder="Сайт кофейни"></label>
+          <label>Тип по-английски<input id="fKindEn" maxlength="80" placeholder="Coffee shop website"></label>
+        </div>
+        <label>Описание по-русски<textarea id="fTextRu" rows="4" maxlength="600"></textarea></label>
+        <label>Описание по-английски<textarea id="fTextEn" rows="4" maxlength="600"></textarea></label>
+        <label>Ссылка на проект<input id="fUrl" type="url" required placeholder="https://"></label>
+        <label>Картинка<input id="fPhoto" type="file" accept="image/*"></label>
+        <img id="preview" class="preview" alt="" hidden>
+        <div class="row">
+          <button id="submit" class="btn main" type="submit">Опубликовать</button>
+          <button id="cancel" class="btn" type="button" hidden>Отмена</button>
+        </div>
+        <p id="formNote" class="note"></p>
+      </form>
+    </div>
+  </section>
+</main>
+<script src="js/admin.js?v=1"></script>
+</body>
+</html>
